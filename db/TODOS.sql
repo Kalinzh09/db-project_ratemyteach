@@ -11,6 +11,7 @@ CREATE TABLE lehrer (
     name VARCHAR(250) NOT NULL,
     vorname VARCHAR(250) NOT NULL,
     fach VARCHAR(250) NOT NULL,
+    rating INT
 );
 
 CREATE TABLE bewertung (
