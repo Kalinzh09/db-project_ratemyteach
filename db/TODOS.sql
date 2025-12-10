@@ -22,3 +22,7 @@ CREATE TABLE bewertung (
     FOREIGN KEY (schueler_id) REFERENCES schueler(id),
     FOREIGN KEY (lehrer_id) REFERENCES lehrer(id)
 );
+
+CREATE TABLE Schülerliste (
+
+);
