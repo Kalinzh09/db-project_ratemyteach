@@ -35,7 +35,7 @@ def is_valid_signature(x_hub_signature, data, private_key):
     mac = hmac.new(encoded_key, msg=data, digestmod=algorithm)
     return hmac.compare_digest(mac.hexdigest(), github_signature)
 
-# DON'T CHANGE
+# DON'T CHANGE 
 @app.post('/update_server')
 def webhook():
     x_hub_signature = request.headers.get('X-Hub-Signature')
