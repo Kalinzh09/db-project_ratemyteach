@@ -1,29 +1,25 @@
 CREATE TABLE schueler (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(250) NOT NULL,
+    email VARCHAR(250) NOT NULL UNIQUE,
     username VARCHAR(250) NOT NULL UNIQUE,
-    password VARCHAR(250) NOT NULL
+    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE lehrer (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(250) NOT NULL,
-    name VARCHAR(250) NOT NULL,
+    email VARCHAR(250) NOT NULL UNIQUE,
     vorname VARCHAR(250) NOT NULL,
-    fach VARCHAR(250) NOT NULL,
-    rating INT
+    name VARCHAR(250) NOT NULL,
+    fach VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE bewertung (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    sterne VARCHAR(250) NOT NULL,
-    datum VARCHAR(250) NOT NULL,
-    schueler_id VARCHAR(250) NOT NULL,
-    lehrer_id VARCHAR(250) NOT NULL
-    FOREIGN KEY (schueler_id) REFERENCES schueler(id),
-    FOREIGN KEY (lehrer_id) REFERENCES lehrer(id)
-);
-
-CREATE TABLE schuelerliste (
-
+    sterne INT NOT NULL CHECK (sterne BETWEEN 1 AND 5),
+    kommentar TEXT,
+    datum DATETIME DEFAULT CURRENT_TIMESTAMP,
+    schueler_id INT NOT NULL,
+    lehrer_id INT NOT NULL,
+    FOREIGN KEY (schueler_id) REFERENCES schueler(id) ON DELETE CASCADE,
+    FOREIGN KEY (lehrer_id) REFERENCES lehrer(id) ON DELETE CASCADE
 );
