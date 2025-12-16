@@ -23,3 +23,16 @@ CREATE TABLE bewertung (
     FOREIGN KEY (schueler_id) REFERENCES schueler(id) ON DELETE CASCADE,
     FOREIGN KEY (lehrer_id) REFERENCES lehrer(id) ON DELETE CASCADE
 );
+
+INSERT INTO schueler (email, username, password) VALUES
+('max@test.de', 'max123', 'hashed_pw_1'),
+('lisa@test.de', 'lisa456', 'hashed_pw_2');
+
+INSERT INTO lehrer (email, vorname, name, fach) VALUES
+('mueller@test.de', 'Anna', 'Müller', 'Mathematik'),
+('schmidt@test.de', 'Peter', 'Schmidt', 'Informatik');
+
+INSERT INTO bewertung (sterne, kommentar, schueler_id, lehrer_id) VALUES
+(5, 'Sehr guter Unterricht!', 1, 1),
+(4, 'Erklärt verständlich', 2, 1),
+(3, 'Ganz okay', 1, 2);
