@@ -20,8 +20,8 @@ CREATE TABLE bewertung (
     datum DATETIME DEFAULT CURRENT_TIMESTAMP,
     schueler_id INT NOT NULL,
     lehrer_id INT NOT NULL,
-    FOREIGN KEY (schueler_id) REFERENCES schueler(id) ON DELETE CASCADE,
-    FOREIGN KEY (lehrer_id) REFERENCES lehrer(id) ON DELETE CASCADE
+    FOREIGN KEY (schueler_id) REFERENCES schueler(id),
+    FOREIGN KEY (lehrer_id) REFERENCES lehrer(id)
 );
 
 INSERT INTO schueler (email, username, password) VALUES
