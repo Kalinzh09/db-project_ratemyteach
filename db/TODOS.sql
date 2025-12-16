@@ -25,12 +25,12 @@ CREATE TABLE bewertung (
 );
 
 INSERT INTO schueler (email, username, password) VALUES
-('max@test.de', 'max123', 'hashed_pw_1'),
+('john.pork@mng.ch', 'johnporkiscalling', 'hashed_pw_1'),
 ('lisa@test.de', 'lisa456', 'hashed_pw_2');
 
 INSERT INTO lehrer (email, vorname, name, fach) VALUES
-('mueller@test.de', 'Anna', 'Müller', 'Mathematik'),
-('schmidt@test.de', 'Peter', 'Schmidt', 'Informatik');
+('lebron.james@mng.ch', 'Lebron', 'James', 'Sport'),
+('peter.schmidt@mng.ch', 'Peter', 'Schmidt', 'Informatik');
 
 INSERT INTO bewertung (sterne, kommentar, schueler_id, lehrer_id) VALUES
 (5, 'Sehr guter Unterricht!', 1, 1),
