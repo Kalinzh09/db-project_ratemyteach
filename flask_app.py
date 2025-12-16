@@ -18,7 +18,7 @@ logging.basicConfig(
 load_dotenv()
 W_SECRET = os.getenv("W_SECRET")
 
-# Init flask app
+# Init flask app innit (100% british)
 app = Flask(__name__)
 app.config["DEBUG"] = True
 app.secret_key = "supersecret"
