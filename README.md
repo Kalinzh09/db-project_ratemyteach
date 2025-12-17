@@ -7,7 +7,7 @@ Diese Anleitung beschreibt den kompletten Ablauf, um das Projekt auszuführen un
 
 ### 👥 Team hat es funktioniert? 
 
--   Alle Teammitglieder besitzen einen **GitHub-Account**
+-   Alle Teammitglieder besitzen einen **GitHub-Account** 
 -   **Eine Person** besitzt einen **PythonAnywhere-Account**
 -   Diese Person teilt das PythonAnywhere-Login **mit dem Team** (dami t alle deployen können)
 
