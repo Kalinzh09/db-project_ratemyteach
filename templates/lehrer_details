@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ lehrer.vorname }} {{ lehrer.name }}</title>
+</head>
+<body>
+    <a href="{{ url_for('lehrer_liste') }}">← Zurück</a>
+
+    <h1>{{ lehrer.vorname }} {{ lehrer.name }}</h1>
+    <p>Fach: {{ lehrer.fach }}</p>
+
+    <h2>Neue Bewertung</h2>
+    <form method="post">
+        <label>Sterne:</label>
+        <select name="sterne" required>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br><br>
+
+        <textarea name="kommentar" placeholder="Kommentar (optional)"></textarea><br><br>
+
+        <button type="submit">Bewertung absenden</button>
+    </form>
+
+    <h2>Bewertungen</h2>
+    {% for b in bewertungen %}
+        <p>
+            ⭐ {{ b.sterne }} – <b>{{ b.username }}</b><br>
+            {{ b.kommentar }}<br>
+            <small>{{ b.datum }}</small>
+        </p>
+        <hr>
+    {% else %}
+        <p>Noch keine Bewertungen.</p>
+    {% endfor %}
+</body>
+</html>
