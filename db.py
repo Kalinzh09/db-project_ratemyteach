@@ -14,7 +14,7 @@ DB_CONFIG = {
 # Init db
 pool = pooling.MySQLConnectionPool(pool_name="pool", pool_size=5, **DB_CONFIG)
 def get_conn():
-    return pool.get_connection()
+    return pool.get_connection() 
 
 # DB-Helper
 def db_read(sql, params=None, single=False):
