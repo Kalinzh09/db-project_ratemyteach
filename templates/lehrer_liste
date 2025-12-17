@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lehrerbewertung</title>
+</head>
+<body>
+    <h1>Lehrerbewertung</h1>
+
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+
+    <ul>
+        {% for l in lehrer %}
+            <li>
+                <strong>{{ l.vorname }} {{ l.name }}</strong>
+                ({{ l.fach }})<br>
+                ⭐ Durchschnitt: {{ l.avg_sterne or '–' }}<br>
+                <a href="{{ url_for('lehrer_detail', lehrer_id=l.id) }}">
+                    Bewerten / Details
+                </a>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+</body>
+</html>
