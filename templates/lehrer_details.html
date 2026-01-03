@@ -3,39 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ lehrer.vorname }} {{ lehrer.name }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        a.back {
+            text-decoration: none;
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        h1 {
+            margin-top: 10px;
+        }
+
+        .subject {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        /* review form */
+        .review-form {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-family: inherit;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        /* reviews list */
+        .review {
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stars {
+            font-size: 1.1rem;
+            color: #f59e0b;
+        }
+
+        .meta {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 <body>
-    <a href="{{ url_for('lehrer_liste') }}">← Zurück</a>
+
+<div class="page">
+
+    <a href="{{ url_for('lehrer_liste') }}" class="back">← Zurück zur Liste</a>
 
     <h1>{{ lehrer.vorname }} {{ lehrer.name }}</h1>
-    <p>Fach: {{ lehrer.fach }}</p>
+    <p class="subject">Fach: {{ lehrer.fach }}</p>
 
-    <h2>Neue Bewertung</h2>
-    <form method="post">
-        <label>Sterne:</label>
-        <select name="sterne" required>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select><br><br>
+    <div class="review-form">
+        <h2>Neue Bewertung</h2>
 
-        <textarea name="kommentar" placeholder="Kommentar (optional)"></textarea><br><br>
+        <form method="post">
+            <label>Sterne</label>
+            <select name="sterne" required>
+                <option value="5">★★★★★ (5)</option>
+                <option value="4">★★★★☆ (4)</option>
+                <option value="3">★★★☆☆ (3)</option>
+                <option value="2">★★☆☆☆ (2)</option>
+                <option value="1">★☆☆☆☆ (1)</option>
+            </select>
 
-        <button type="submit">Bewertung absenden</button>
-    </form>
+            <label>Kommentar (optional)</label>
+            <textarea name="kommentar" placeholder="Wie war dein Unterricht?"></textarea>
+
+            <button type="submit">Bewertung absenden</button>
+        </form>
+    </div>
 
     <h2>Bewertungen</h2>
+
     {% for b in bewertungen %}
-        <p>
-            ⭐ {{ b.sterne }} – <b>{{ b.username }}</b><br>
-            {{ b.kommentar }}<br>
-            <small>{{ b.datum }}</small>
-        </p>
-        <hr>
+        <div class="review">
+            <div class="stars">
+                {{ "★" * b.sterne }}{{ "☆" * (5 - b.sterne) }}
+            </div>
+            <strong>{{ b.username }}</strong>
+            <div class="meta">{{ b.datum }}</div>
+            <p>{{ b.kommentar or "Kein Kommentar angegeben." }}</p>
+        </div>
     {% else %}
-        <p>Noch keine Bewertungen.</p>
+        <p>Noch keine Bewertungen vorhanden.</p>
     {% endfor %}
+
+</div>
+
 </body>
 </html>
+
