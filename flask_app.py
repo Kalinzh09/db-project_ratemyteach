@@ -80,7 +80,7 @@ def register():
         error = "Benutzername existiert bereits."
 
     return render_template("auth.html",
-        title="Registrieren",
+        title="Registrieren neue funktion",
         action=url_for("register"),
         button_label="Registrieren",
         error=error,
