@@ -5,18 +5,26 @@ from db import db_read, db_write
 from auth import login_manager, authenticate, register_user
 from flask_login import login_user, logout_user, login_required, current_user
 import logging
- 
+
 # --------------------
 # Setup
 # --------------------
- 
+
 
 logging.basicConfig(level=logging.DEBUG)
 load_dotenv()
 
+# Load .env variables
+load_dotenv()
+W_SECRET = os.getenv("W_SECRET")
+
 app = Flask(__name__)
 app.config["DEBUG"] = True
 app.secret_key = "supersecret"
+
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
 
 # DON'T CHANGE
 def is_valid_signature(x_hub_signature, data, private_key):
@@ -37,8 +45,6 @@ def webhook():
         return 'Updated PythonAnywhere successfully', 200
     return 'Unathorized', 401
 
-login_manager.init_app(app)
-login_manager.login_view = "login"
 
 # --------------------
 # Auth
