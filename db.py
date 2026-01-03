@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 from mysql.connector import pooling
 
-# Load .env variables
+# Load .env variables 
 load_dotenv()
 DB_CONFIG = {
     "host": os.getenv("DB_HOST"),
