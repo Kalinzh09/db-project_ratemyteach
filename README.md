@@ -13,7 +13,7 @@ Diese Anleitung beschreibt den kompletten Ablauf, um das Projekt auszuführen un
 
 ------------------------------------------------------------------------
 
-## 🚀 1. GitHub-Projekt einrichten
+## 🚀 1. GitHub-Projekt einrichten 
 
 ### 1.1 Vorlage importieren
 
