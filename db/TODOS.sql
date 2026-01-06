@@ -30,9 +30,12 @@ INSERT INTO schueler (email, username, password) VALUES
 
 INSERT INTO lehrer (email, vorname, name, fach) VALUES
 ('lebron.james@mng.ch', 'Lebron', 'James', 'Sport'),
-('peter.schmidt@mng.ch', 'Peter', 'Schmidt', 'Informatik');
+('peter.schmidt@mng.ch', 'Peter', 'Schmidt', 'Informatik'),
+('peter.cheese@mng.ch', 'Peter', 'Cheese', 'Informatik');
+
 
 INSERT INTO bewertung (sterne, kommentar, schueler_id, lehrer_id) VALUES
 (5, 'Sehr guter Unterricht!', 1, 1),
 (4, 'Erklärt verständlich', 2, 1),
 (3, 'Ganz okay', 1, 2);
+
