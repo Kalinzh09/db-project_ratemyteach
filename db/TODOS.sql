@@ -7,7 +7,7 @@ CREATE TABLE schueler (
 
 CREATE TABLE admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(250) NOT NULL UNIQUE,
+    username VARCHAR(250) NOT NULL UNIQUE
 );
 
 CREATE TABLE lehrer (
