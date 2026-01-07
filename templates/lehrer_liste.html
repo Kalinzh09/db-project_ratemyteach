@@ -16,9 +16,19 @@
 
 <div class="container">
 
+    {# ADMIN: Lehrer hinzufügen #}
+    {% if is_admin(current_user) %}
+        <div style="margin-bottom: 20px;">
+            <a class="button" href="{{ url_for('add_lehrer') }}">
+                ➕ Lehrer hinzufügen
+            </a>
+        </div>
+    {% endif %}
+
     {% for l in lehrer %}
         <div class="card">
-            <h2>{{ l.vorname }} {{ l.name }}
+            <h2>
+                {{ l.vorname }} {{ l.name }}
                 <span class="badge">{{ l.fach }}</span>
             </h2>
 
@@ -28,17 +38,14 @@
                     {% set half_star = 1 if (l.avg_sterne - full_stars) >= 0.5 else 0 %}
                     {% set empty_stars = 5 - full_stars - half_star %}
 
-                    <!-- Volle Sterne -->
                     {% for i in range(full_stars) %}
                         <span class="star full">★</span>
                     {% endfor %}
 
-                    <!-- Halber Stern -->
                     {% if half_star %}
                         <span class="star half">★</span>
                     {% endif %}
 
-                    <!-- Leere Sterne -->
                     {% for i in range(empty_stars) %}
                         <span class="star empty">☆</span>
                     {% endfor %}
@@ -52,17 +59,30 @@
             <a class="button" href="{{ url_for('lehrer_detail', lehrer_id=l.id) }}">
                 Bewerten / Details
             </a>
+
+            {# ADMIN: Lehrer löschen #}
+            {% if is_admin(current_user) %}
+                <form
+                    method="POST"
+                    action="{{ url_for('delete_lehrer', lehrer_id=l.id) }}"
+                    onsubmit="return confirm('Lehrer wirklich löschen?');"
+                    style="margin-top: 10px;"
+                >
+                    <button class="button danger" type="submit">
+                        🗑 Lehrer löschen
+                    </button>
+                </form>
+            {% endif %}
         </div>
     {% endfor %}
 
 </div>
 
 <style>
-/* Sterne Farben */
 .star.full { color: gold; }
-.star.half { 
-    color: gold; 
-    position: relative; 
+.star.half {
+    color: gold;
+    position: relative;
 }
 .star.half::before {
     content: '★';
@@ -74,6 +94,13 @@
     color: gold;
 }
 .star.empty { color: #ccc; }
+
+.button.danger {
+    background-color: #c0392b;
+}
+.button.danger:hover {
+    background-color: #a93226;
+}
 </style>
 
 </body>
