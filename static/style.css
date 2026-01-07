@@ -97,3 +97,33 @@ button {
     border-radius: 8px;
     cursor: pointer;
 }
+@media (max-width: 600px) {
+
+    header {
+        flex-direction: column;
+        gap: 0.4rem;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 1.3rem;
+    }
+
+    .container {
+        margin: 1rem auto;
+    }
+
+    .card {
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 1.1rem;
+    }
+
+    .button, button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
