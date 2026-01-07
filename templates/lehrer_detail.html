@@ -1,7 +1,4 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 <header>
@@ -11,27 +8,43 @@
 
 <div class="container">
 
+<!-- Bewertungsformular -->
 <div class="card">
     <h3>Bewertung abgeben</h3>
 
-    <form method="post">
-        <label>Sterne (1–5)</label>
-        <select name="sterne" required>
-            <option value="">Bitte wählen</option>
-            <option>1</option><option>2</option><option>3</option>
-            <option>4</option><option>5</option>
-        </select>
+    <form method="post" id="bewertung-form">
+        <div class="star-rating">
+            {% for i in range(1,6) %}
+                <span class="star" data-value="{{ i }}">☆</span>
+            {% endfor %}
+        </div>
+        <input type="hidden" name="sterne" id="sterne" required>
 
         <textarea name="kommentar" placeholder="Kommentar..."></textarea>
-
         <button type="submit">Absenden</button>
     </form>
 </div>
 
+<!-- Bewertungen -->
 {% for b in bewertungen %}
 <div class="card">
     <strong>{{ b.username }}</strong><br>
-    ⭐ {{ b.sterne }} / 5<br>
+    <!-- Sterne dynamisch -->
+    {% set full_stars = b.sterne|int %}
+    {% set half_star = 1 if (b.sterne - full_stars) >= 0.5 else 0 %}
+    {% set empty_stars = 5 - full_stars - half_star %}
+
+    {% for i in range(full_stars) %}
+        <span class="star full">★</span>
+    {% endfor %}
+    {% if half_star %}
+        <span class="star half">★</span>
+    {% endif %}
+    {% for i in range(empty_stars) %}
+        <span class="star empty">☆</span>
+    {% endfor %}
+
+    / 5<br>
     <small>{{ b.datum }}</small>
     <p>{{ b.kommentar }}</p>
 </div>
@@ -39,3 +52,68 @@
 
 </div>
 
+<style>
+/* Sterne für Anzeige */
+.star.full { color: gold; }
+.star.half {
+    color: gold;
+    position: relative;
+}
+.star.half::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    display: inline-block;
+    color: gold;
+}
+.star.empty { color: #ccc; }
+
+/* Klickbare Sterne */
+.star-rating .star {
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ccc;
+}
+.star-rating .star.selected,
+.star-rating .star.hover {
+    color: gold;
+}
+</style>
+
+<script>
+const stars = document.querySelectorAll('.star-rating .star');
+const hiddenInput = document.getElementById('sterne');
+
+stars.forEach((star, idx) => {
+    star.addEventListener('click', () => {
+        hiddenInput.value = idx + 1;
+        updateStars(idx);
+    });
+    star.addEventListener('mouseover', () => {
+        highlightStars(idx);
+    });
+    star.addEventListener('mouseout', () => {
+        resetStars();
+    });
+});
+
+function updateStars(index) {
+    stars.forEach((s, i) => {
+        s.classList.toggle('selected', i <= index);
+    });
+}
+
+function highlightStars(index) {
+    stars.forEach((s, i) => {
+        s.classList.toggle('hover', i <= index);
+    });
+}
+
+function resetStars() {
+    stars.forEach((s, i) => {
+        s.classList.remove('hover');
+    });
+}
+</script>
