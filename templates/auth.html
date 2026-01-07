@@ -1,76 +1,41 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
 
-{% block content %}
-<style>
-  .auth-wrapper {
-    max-width: 400px;
-    margin: 50px auto;
-  }
-  .auth-card {
-    background: #ffffff;
-    padding: 30px 30px 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  }
-  .auth-title {
-    font-size: 26px;
-    font-weight: 600;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  .error { color: red; margin-bottom: 15px; }
-  .auth-footer-text {
-    font-size: 13px;
-    margin-top: 15px;
-    text-align: center;
-  }
-  .auth-footer-text a { font-weight: 600; }
-</style>
+<header>
+    <h1>RateMyTeach</h1>
+</header>
 
-<div class="auth-wrapper">
-  <div class="auth-card">
+<div class="container">
 
-    <h1 class="auth-title">{{ title }}</h1>
+    <div class="card" style="max-width:420px; margin:auto;">
+        <h2 style="text-align:center; margin-bottom:1rem;">
+            {{ title }}
+        </h2>
 
-    {% if error %}
-      <p class="error">{{ error }}</p>
-    {% endif %}
+        {% if error %}
+            <p style="color:#dc2626; text-align:center;">{{ error }}</p>
+        {% endif %}
 
-    <form action="{{ action }}" method="post">
-      <div class="form-group">
-        <label for="username">Benutzername</label>
-        <input
-          type="text"
-          class="form-control"
-          name="username"
-          placeholder="Benutzername"
-          required
-        >
-      </div>
+        <form method="post">
+            <input type="text" name="username" placeholder="Benutzername" required>
+            <input type="password" name="password" placeholder="Passwort" required>
 
-      <div class="form-group">
-        <label for="password">Passwort</label>
-        <input
-          type="password"
-          class="form-control"
-          name="password"
-          placeholder="Passwort"
-          required
-        >
-      </div>
+            <button type="submit" style="width:100%;">{{ button_label }}</button>
+        </form>
 
-      <button type="submit" class="btn btn-primary btn-block">
-        {{ button_label }}
-      </button>
-    </form>
+        <p style="text-align:center; margin-top:1rem;">
+            {{ footer_text }}
+            <a href="{{ footer_link_url }}">{{ footer_link_label }}</a>
+        </p>
+    </div>
 
-    {% if footer_text %}
-      <p class="auth-footer-text">
-        {{ footer_text }}
-        <a href="{{ footer_link_url }}">{{ footer_link_label }}</a>
-      </p>
-    {% endif %}
-
-  </div>
 </div>
-{% endblock %}
+
+</body>
+</html>
