@@ -8,7 +8,6 @@ CREATE TABLE schueler (
 CREATE TABLE admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(250) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE lehrer (
@@ -45,3 +44,5 @@ INSERT INTO bewertung (sterne, kommentar, schueler_id, lehrer_id) VALUES
 (4, 'Erklärt verständlich', 2, 1),
 (3, 'Ganz okay', 1, 2);
 
+INSERT INTO admin (username) VALUES
+('x');
