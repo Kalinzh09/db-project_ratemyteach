@@ -104,13 +104,30 @@ def lehrer_detail(lehrer_id):
         kommentar = request.form.get("kommentar")
 
         if sterne:  # nur wenn Sterne gesetzt
-            db_write("""
-                INSERT INTO bewertung (sterne, kommentar, schueler_id, lehrer_id)
-                VALUES (%s, %s, %s, %s)
-            """, (sterne, kommentar, current_user.id, lehrer_id))
+            # Prüfen, ob der aktuelle User bereits eine Bewertung für diesen Lehrer hat
+            existing = db_read(
+                "SELECT id FROM bewertung WHERE schueler_id=%s AND lehrer_id=%s",
+                (current_user.id, lehrer_id),
+                single=True
+            )
+
+            if existing:
+                # Bewertung aktualisieren
+                db_write(
+                    "UPDATE bewertung SET sterne=%s, kommentar=%s, datum=NOW() WHERE id=%s",
+                    (sterne, kommentar, existing["id"])
+                )
+            else:
+                # Neue Bewertung einfügen
+                db_write(
+                    "INSERT INTO bewertung (sterne, kommentar, schueler_id, lehrer_id, datum) "
+                    "VALUES (%s, %s, %s, %s, NOW())",
+                    (sterne, kommentar, current_user.id, lehrer_id)
+                )
 
         return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
 
+    # Lehrer-Details und Bewertungen abrufen
     lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
     bewertungen = db_read("""
         SELECT b.sterne, b.kommentar, b.datum, s.username
@@ -123,6 +140,7 @@ def lehrer_detail(lehrer_id):
     return render_template("lehrer_detail.html",
         lehrer=lehrer,
         bewertungen=bewertungen)
+
 
 
 if __name__ == "__main__":
