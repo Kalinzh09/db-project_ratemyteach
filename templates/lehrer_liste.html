@@ -1,14 +1,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>Lehrerbewertung</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
@@ -26,8 +23,26 @@
             </h2>
 
             <p class="rating">
-                ⭐ 
                 {% if l.avg_sterne is not none %}
+                    {% set full_stars = l.avg_sterne|int %}
+                    {% set half_star = 1 if (l.avg_sterne - full_stars) >= 0.5 else 0 %}
+                    {% set empty_stars = 5 - full_stars - half_star %}
+
+                    <!-- Volle Sterne -->
+                    {% for i in range(full_stars) %}
+                        <span class="star full">★</span>
+                    {% endfor %}
+
+                    <!-- Halber Stern -->
+                    {% if half_star %}
+                        <span class="star half">★</span>
+                    {% endif %}
+
+                    <!-- Leere Sterne -->
+                    {% for i in range(empty_stars) %}
+                        <span class="star empty">☆</span>
+                    {% endfor %}
+
                     {{ l.avg_sterne }} / 5
                 {% else %}
                     Noch keine Bewertungen
@@ -41,5 +56,25 @@
     {% endfor %}
 
 </div>
+
+<style>
+/* Sterne Farben */
+.star.full { color: gold; }
+.star.half { 
+    color: gold; 
+    position: relative; 
+}
+.star.half::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    display: inline-block;
+    color: gold;
+}
+.star.empty { color: #ccc; }
+</style>
+
 </body>
 </html>
