@@ -180,14 +180,15 @@ def lehrer_detail(lehrer_id):
 @admin_required
 def add_lehrer():
     if request.method == "POST":
+        email = request.form.get("Lehrer Email")
         vorname = request.form.get("vorname")
         name = request.form.get("name")
         fach = request.form.get("fach")
 
-        if vorname and name and fach:
+        if email and vorname and name and fach:
             db_write(
-                "INSERT INTO lehrer (vorname, name, fach) VALUES (%s, %s, %s)",
-                (vorname, name, fach)
+                "INSERT INTO lehrer (email, vorname, name, fach) VALUES (%s, %s, %s, %s)",
+                (email, vorname, name, fach)
             )
             return redirect(url_for("lehrer_liste"))
 
