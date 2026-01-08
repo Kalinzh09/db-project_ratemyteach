@@ -57,7 +57,6 @@ def login():
         user = authenticate(
             request.form.get("username"),
             request.form.get("password"),
-            request.form.get("password")
         )
         if user:
             login_user(user)
@@ -82,6 +81,7 @@ def register():
     if request.method == "POST":
         ok = register_user(
             request.form.get("username"),
+            request.form.get("password"),
             request.form.get("password")
         )
         if ok:
