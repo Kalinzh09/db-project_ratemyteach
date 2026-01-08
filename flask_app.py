@@ -180,7 +180,7 @@ def lehrer_detail(lehrer_id):
 @admin_required
 def add_lehrer():
     if request.method == "POST":
-        email = request.form.get("Lehrer Email")
+        email = request.form.get("email")
         vorname = request.form.get("vorname")
         name = request.form.get("name")
         fach = request.form.get("fach")
