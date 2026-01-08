@@ -82,7 +82,7 @@ def register():
         ok = register_user(
             request.form.get("username"),
             request.form.get("password"),
-            request.form.get("password")
+            request.form.get("email")
         )
         if ok:
             return redirect(url_for("login"))
