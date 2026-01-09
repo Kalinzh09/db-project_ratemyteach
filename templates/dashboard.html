@@ -1,1 +1,60 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Mein Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Mein Dashboard</h1>
+    <a href="{{ url_for('lehrer_liste') }}" style="color:white;">Lehrerübersicht</a>
+</header>
+
+<div class="container">
+
+{% if bewertungen %}
+    {% for b in bewertungen %}
+        <div class="card">
+            <h2>
+                {{ b.vorname }} {{ b.name }}
+                <span class="badge">{{ b.fach }}</span>
+            </h2>
+
+            <p class="rating">
+                {% for i in range(b.sterne) %}
+                    <span class="star full">★</span>
+                {% endfor %}
+                {% for i in range(5 - b.sterne) %}
+                    <span class="star empty">☆</span>
+                {% endfor %}
+                {{ b.sterne }} / 5
+            </p>
+
+            <p>{{ b.kommentar or "Kein Kommentar" }}</p>
+
+            <div style="display:flex; gap:10px;">
+                <a class="button" href="{{ url_for('edit_bewertung', bewertung_id=b.bewertung_id) }}">
+                    Bearbeiten
+                </a>
+
+                <form method="post" action="{{ url_for('delete_bewertung', bewertung_id=b.bewertung_id) }}">
+                    <button class="button danger" type="submit"
+                        onclick="return confirm('Bewertung wirklich löschen?')">
+                        Löschen
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Du hast noch keine Bewertungen abgegeben.</p>
+{% endif %}
+
+</div>
+
+</body>
+</html>
 
