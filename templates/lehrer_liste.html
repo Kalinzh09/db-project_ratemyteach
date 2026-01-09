@@ -9,9 +9,14 @@
 </head>
 <body>
 
-<header>
+<header class="header">
     <h1>RateMyTeach</h1>
-    <a href="{{ url_for('logout') }}" style="color:white;">Logout</a>
+
+    <nav class="menu">
+        <a href="{{ url_for('lehrer_liste') }}">🏠 Start</a>
+        <a href="{{ url_for('dashboard') }}">📊 Dashboard</a>
+        <a href="{{ url_for('logout') }}">🚪 Logout</a>
+    </nav>
 </header>
 
 <div class="container">
@@ -79,6 +84,25 @@
 </div>
 
 <style>
+/* Header & Menu */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+/* Sterne */
 .star.full { color: gold; }
 .star.half {
     color: gold;
@@ -95,6 +119,7 @@
 }
 .star.empty { color: #ccc; }
 
+/* Buttons */
 .button.danger {
     background-color: #c0392b;
 }
