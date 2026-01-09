@@ -204,6 +204,81 @@ def delete_lehrer(lehrer_id):
     db_write("DELETE FROM lehrer WHERE id=%s", (lehrer_id,))
     return redirect(url_for("lehrer_liste"))
 
+# --------------------
+# Dashboard (User)
+# --------------------
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    bewertungen = db_read(
+        """
+        SELECT 
+            b.id AS bewertung_id,
+            b.sterne,
+            b.kommentar,
+            b.datum,
+            l.id AS lehrer_id,
+            l.vorname,
+            l.name,
+            l.fach
+        FROM bewertung b
+        JOIN lehrer l ON b.lehrer_id = l.id
+        WHERE b.schueler_id = %s
+        ORDER BY b.datum DESC
+        """,
+        (current_user.id,)
+    )
+
+    return render_template("dashboard.html", bewertungen=bewertungen)
+
+
+@app.route("/dashboard/edit/<int:bewertung_id>", methods=["GET", "POST"])
+@login_required
+def edit_bewertung(bewertung_id):
+    bewertung = db_read(
+        """
+        SELECT * FROM bewertung
+        WHERE id=%s AND schueler_id=%s
+        """,
+        (bewertung_id, current_user.id),
+        single=True
+    )
+
+    if not bewertung:
+        abort(403)
+
+    if request.method == "POST":
+        sterne = request.form.get("sterne")
+        kommentar = request.form.get("kommentar")
+
+        db_write(
+            """
+            UPDATE bewertung
+            SET sterne=%s, kommentar=%s, datum=NOW()
+            WHERE id=%s
+            """,
+            (sterne, kommentar, bewertung_id)
+        )
+
+        return redirect(url_for("dashboard"))
+
+    return render_template("edit_bewertung.html", bewertung=bewertung)
+
+
+@app.route("/dashboard/delete/<int:bewertung_id>", methods=["POST"])
+@login_required
+def delete_bewertung(bewertung_id):
+    db_write(
+        """
+        DELETE FROM bewertung
+        WHERE id=%s AND schueler_id=%s
+        """,
+        (bewertung_id, current_user.id)
+    )
+
+    return redirect(url_for("dashboard"))
+
 
 # --------------------
 
