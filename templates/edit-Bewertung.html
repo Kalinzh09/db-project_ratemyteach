@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bewertung bearbeiten</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Bewertung bearbeiten</h1>
+    <a href="{{ url_for('dashboard') }}" style="color:white;">Zurück</a>
+</header>
+
+<div class="container">
+    <div class="card">
+        <form method="post">
+
+            <label>Sterne (1–5)</label>
+            <input type="number" name="sterne" min="1" max="5"
+                   value="{{ bewertung.sterne }}" required>
+
+            <label>Kommentar</label>
+            <textarea name="kommentar">{{ bewertung.kommentar }}</textarea>
+
+            <button class="button" type="submit">Speichern</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
