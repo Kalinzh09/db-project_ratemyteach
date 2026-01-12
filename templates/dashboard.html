@@ -5,53 +5,96 @@
     <title>Mein Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .dashboard-container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .bewertung-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .button-row a,
+        .button-row form {
+            flex: 1;
+        }
+
+        .button-row button,
+        .button-row a.button {
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .button {
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+        }
+
+        .button:hover {
+            background-color: #2980b9;
+        }
+
+        .button.delete {
+            background-color: #e74c3c;
+        }
+
+        .button.delete:hover {
+            background-color: #c0392b;
+        }
+    </style>
 </head>
 <body>
 
 <header>
     <h1>Mein Dashboard</h1>
-    <a href="{{ url_for('lehrer_liste') }}" style="color:white;">Lehrerübersicht</a>
+    <a href="/" style="color:white;">Menü</a>
 </header>
 
-<div class="container">
+<div class="dashboard-container">
 
-{% if bewertungen %}
-    {% for b in bewertungen %}
-        <div class="card">
-            <h2>
-                {{ b.vorname }} {{ b.name }}
-                <span class="badge">{{ b.fach }}</span>
-            </h2>
+    {% if bewertungen %}
+        {% for b in bewertungen %}
+            <div class="bewertung-card">
+                <h3>{{ b['vorname'] }} {{ b['name'] }}</h3>
+                <p><strong>Sterne:</strong> {{ b['sterne'] }} / 5</p>
+                <p>{{ b['kommentar'] or "Kein Kommentar" }}</p>
 
-            <p class="rating">
-                {% for i in range(b.sterne) %}
-                    <span class="star full">★</span>
-                {% endfor %}
-                {% for i in range(5 - b.sterne) %}
-                    <span class="star empty">☆</span>
-                {% endfor %}
-                {{ b.sterne }} / 5
-            </p>
+                <div class="button-row">
+                    <a class="button" href="{{ url_for('edit_bewertung', bewertung_id=b['bewertung_id']) }}">
+                        Bearbeiten
+                    </a>
 
-            <p>{{ b.kommentar or "Kein Kommentar" }}</p>
-
-            <div style="display:flex; gap:10px;">
-                <a class="button" href="{{ url_for('edit_bewertung', bewertung_id=b.bewertung_id) }}">
-                    Bearbeiten
-                </a>
-
-                <form method="post" action="{{ url_for('delete_bewertung', bewertung_id=b.bewertung_id) }}">
-                    <button class="button danger" type="submit"
-                        onclick="return confirm('Bewertung wirklich löschen?')">
-                        Löschen
-                    </button>
-                </form>
+                    <form method="post"
+                          action="{{ url_for('delete_bewertung', bewertung_id=b['bewertung_id']) }}"
+                          onsubmit="return confirm('Bewertung wirklich löschen?');">
+                        <button class="button delete" type="submit">
+                            Löschen
+                        </button>
+                    </form>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-{% else %}
-    <p>Du hast noch keine Bewertungen abgegeben.</p>
-{% endif %}
+        {% endfor %}
+    {% else %}
+        <p>Noch keine Bewertungen abgegeben.</p>
+    {% endif %}
 
 </div>
 
