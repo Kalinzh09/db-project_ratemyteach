@@ -214,7 +214,7 @@ def dashboard():
     bewertungen = db_read(
         """
         SELECT 
-        b.id,
+        b.id AS bewertung.id,
         b.sterne,
         b.kommentar,
         b.datum,
