@@ -66,7 +66,6 @@
 <header>
     <h1>Mein Dashboard</h1>
     <a href="/" style="color:white;">Menü</a>
-
 </header>
 
 <div class="dashboard-container">
@@ -74,17 +73,22 @@
     {% if bewertungen %}
         {% for b in bewertungen %}
             <div class="bewertung-card">
-                <h3>{{ b.lehrer_vorname }} {{ b.lehrer_name }}</h3>
-                <p><strong>Sterne:</strong> {{ b.sterne }} / 5</p>
-                <p>{{ b.text or "Kein Kommentar" }}</p>
+                <h3>
+                    {{ b['lehrer_vorname'] }} {{ b['lehrer_name'] }}
+                </h3>
+
+                <p><strong>Sterne:</strong> {{ b['sterne'] }} / 5</p>
+
+                <p>{{ b['text'] if b['text'] else "Kein Kommentar" }}</p>
 
                 <div class="button-row">
-                    <a class="button" href="{{ url_for('edit_bewertung', bewertung_id=b.id) }}">
+                    <a class="button"
+                       href="{{ url_for('edit_bewertung', bewertung_id=b['id']) }}">
                         Bearbeiten
                     </a>
 
                     <form method="post"
-                          action="{{ url_for('delete_bewertung', bewertung_id=b.id) }}"
+                          action="{{ url_for('delete_bewertung', bewertung_id=b['id']) }}"
                           onsubmit="return confirm('Bewertung wirklich löschen?');">
                         <button class="button delete" type="submit">
                             Löschen
