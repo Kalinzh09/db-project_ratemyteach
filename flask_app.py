@@ -214,14 +214,15 @@ def dashboard():
     bewertungen = db_read(
         """
         SELECT 
-            b.id AS bewertung_id,
-            b.sterne,
-            b.kommentar,
-            b.datum,
-            l.id AS lehrer_id,
-            l.vorname,
-            l.name,
-            l.fach
+        b.id,
+        b.sterne,
+        b.kommentar,
+        b.datum,
+        l.id AS lehrer_id,
+        l.vorname,
+        l.name,
+        l.fach
+
         FROM bewertung b
         JOIN lehrer l ON b.lehrer_id = l.id
         WHERE b.schueler_id = %s
