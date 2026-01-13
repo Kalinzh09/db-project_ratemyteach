@@ -1,6 +1,5 @@
 from flask import Flask, redirect, render_template, request, url_for, abort
 from dotenv import load_dotenv
-import os
 from db import db_read, db_write
 from auth import login_manager, authenticate, register_user
 from flask_login import login_user, logout_user, login_required, current_user
@@ -43,11 +42,10 @@ def admin_required(func):
     return wrapper
 
 
-# für Templates verfügbar machen
 app.jinja_env.globals.update(is_admin=is_admin)
 
 # --------------------
-# Auth-Routen
+# Auth
 # --------------------
 
 @app.route("/login", methods=["GET", "POST"])
@@ -66,7 +64,6 @@ def login():
     return render_template(
         "auth.html",
         title="Einloggen",
-        action=url_for("login"),
         button_label="Login",
         error=error,
         footer_text="Noch kein Konto?",
@@ -86,12 +83,11 @@ def register():
         )
         if ok:
             return redirect(url_for("login"))
-        error = "Benutzername existiert bereits."
+        error = "Benutzername oder Email existiert bereits."
 
     return render_template(
         "auth.html",
         title="Registrieren",
-        action=url_for("register"),
         button_label="Registrieren",
         error=error,
         footer_text="Schon registriert?",
@@ -107,7 +103,7 @@ def logout():
     return redirect(url_for("login"))
 
 # --------------------
-# Lehrerbewertung
+# Lehrerübersicht
 # --------------------
 
 @app.route("/")
@@ -122,41 +118,33 @@ def lehrer_liste():
     """)
     return render_template("lehrer_liste.html", lehrer=lehrer)
 
+# --------------------
+# Lehrer Detail + Bewertung
+# --------------------
 
 @app.route("/lehrer/<int:lehrer_id>", methods=["GET", "POST"])
 @login_required
 def lehrer_detail(lehrer_id):
+
     if request.method == "POST":
-        sterne = request.form.get("sterne")
+        v = float(request.form["verstandlichkeit"])
+        f = float(request.form["fairness"])
+        s = float(request.form["sympathie"])
+        o = float(request.form["organisation"])
+        fw = float(request.form["fachwissen"])
         kommentar = request.form.get("kommentar")
 
-        if sterne:
-            existing = db_read(
-                "SELECT id FROM bewertung WHERE schueler_id=%s AND lehrer_id=%s",
-                (current_user.id, lehrer_id),
-                single=True
-            )
+        sterne = round((v + f + s + o + fw) / 5, 2)
 
-            if existing:
-                db_write(
-                    "UPDATE bewertung SET sterne=%s, kommentar=%s, datum=NOW() WHERE id=%s",
-                    (sterne, kommentar, existing["id"])
-                )
-            else:
-                db_write(
-                    """INSERT INTO bewertung
-                       (sterne, kommentar, schueler_id, lehrer_id, datum)
-                       VALUES (%s, %s, %s, %s, NOW())""",
-                    (sterne, kommentar, current_user.id, lehrer_id)
-                )
+        db_write("""
+        INSERT INTO bewertung 
+        (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """, (sterne, v, f, s, o, fw, kommentar, current_user.id, lehrer_id))
 
         return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
 
-    lehrer = db_read(
-        "SELECT * FROM lehrer WHERE id=%s",
-        (lehrer_id,),
-        single=True
-    )
+    lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
 
     bewertungen = db_read("""
         SELECT b.sterne, b.kommentar, b.datum, s.username
@@ -166,14 +154,29 @@ def lehrer_detail(lehrer_id):
         ORDER BY b.datum DESC
     """, (lehrer_id,))
 
+    stats = db_read("""
+        SELECT 
+        ROUND(AVG(verstandlichkeit),2) AS verstandlichkeit,
+        ROUND(AVG(fairness),2) AS fairness,
+        ROUND(AVG(sympathie),2) AS sympathie,
+        ROUND(AVG(organisation),2) AS organisation,
+        ROUND(AVG(fachwissen),2) AS fachwissen
+        FROM bewertung
+        WHERE lehrer_id=%s
+    """, (lehrer_id,), single=True)
+
+    if not stats["verstandlichkeit"]:
+        stats = {"verstandlichkeit":0,"fairness":0,"sympathie":0,"organisation":0,"fachwissen":0}
+
     return render_template(
         "lehrer_detail.html",
         lehrer=lehrer,
-        bewertungen=bewertungen
+        bewertungen=bewertungen,
+        stats=stats
     )
 
 # --------------------
-# Admin-Routen
+# Admin
 # --------------------
 
 @app.route("/admin/lehrer/add", methods=["GET", "POST"])
@@ -188,7 +191,7 @@ def add_lehrer():
 
         if email and vorname and name and fach:
             db_write(
-                "INSERT INTO lehrer (email, vorname, name, fach) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO lehrer (email, vorname, name, fach) VALUES (%s,%s,%s,%s)",
                 (email, vorname, name, fach)
             )
             return redirect(url_for("lehrer_liste"))
@@ -205,81 +208,32 @@ def delete_lehrer(lehrer_id):
     return redirect(url_for("lehrer_liste"))
 
 # --------------------
-# Dashboard (User)
+# Dashboard
 # --------------------
 
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    bewertungen = db_read(
-        """
-        SELECT 
-        b.id AS bewertung.id,
-        b.sterne,
-        b.kommentar,
-        b.datum,
-        l.id AS lehrer_id,
-        l.vorname,
-        l.name,
-        l.fach
-
+    bewertungen = db_read("""
+        SELECT b.id, b.sterne, b.kommentar, b.datum,
+               l.id AS lehrer_id, l.vorname, l.name, l.fach
         FROM bewertung b
         JOIN lehrer l ON b.lehrer_id = l.id
         WHERE b.schueler_id = %s
         ORDER BY b.datum DESC
-        """,
-        (current_user.id,)
-    )
+    """, (current_user.id,))
 
     return render_template("dashboard.html", bewertungen=bewertungen)
-
-
-@app.route("/dashboard/edit/<int:bewertung_id>", methods=["GET", "POST"])
-@login_required
-def edit_bewertung(bewertung_id):
-    bewertung = db_read(
-        """
-        SELECT * FROM bewertung
-        WHERE id=%s AND schueler_id=%s
-        """,
-        (bewertung_id, current_user.id),
-        single=True
-    )
-
-    if not bewertung:
-        abort(403)
-
-    if request.method == "POST":
-        sterne = request.form.get("sterne")
-        kommentar = request.form.get("kommentar")
-
-        db_write(
-            """
-            UPDATE bewertung
-            SET sterne=%s, kommentar=%s, datum=NOW()
-            WHERE id=%s
-            """,
-            (sterne, kommentar, bewertung_id)
-        )
-
-        return redirect(url_for("dashboard"))
-
-    return render_template("edit_bewertung.html", bewertung=bewertung)
 
 
 @app.route("/dashboard/delete/<int:bewertung_id>", methods=["POST"])
 @login_required
 def delete_bewertung(bewertung_id):
     db_write(
-        """
-        DELETE FROM bewertung
-        WHERE id=%s AND schueler_id=%s
-        """,
+        "DELETE FROM bewertung WHERE id=%s AND schueler_id=%s",
         (bewertung_id, current_user.id)
     )
-
     return redirect(url_for("dashboard"))
-
 
 # --------------------
 
