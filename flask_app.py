@@ -239,3 +239,37 @@ def delete_bewertung(bewertung_id):
 
 if __name__ == "__main__":
     app.run()
+
+
+@app.route("/dashboard/edit/<int:bewertung_id>", methods=["GET", "POST"])
+@login_required
+def edit_bewertung(bewertung_id):
+
+    # Bewertung laden (nur eigene!)
+    bewertung = db_read(
+        "SELECT * FROM bewertung WHERE id=%s AND schueler_id=%s",
+        (bewertung_id, current_user.id),
+        single=True
+    )
+
+    if not bewertung:
+        abort(404)
+
+    if request.method == "POST":
+        sterne = float(request.form["sterne"])
+        kommentar = request.form.get("kommentar")
+
+        db_write("""
+            UPDATE bewertung
+            SET sterne=%s,
+                kommentar=%s
+            WHERE id=%s AND schueler_id=%s
+        """, (sterne, kommentar, bewertung_id, current_user.id))
+
+        return redirect(url_for("dashboard"))
+
+    return render_template(
+        "edit_bewertung.html",
+        bewertung=bewertung
+    )
+
