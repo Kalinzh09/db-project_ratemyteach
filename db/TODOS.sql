@@ -20,11 +20,23 @@ CREATE TABLE lehrer (
 
 CREATE TABLE bewertung (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    sterne INT NOT NULL CHECK (sterne BETWEEN 1 AND 5),
+
+    -- Overall Score (wird aus Kategorien berechnet)
+    sterne FLOAT NOT NULL CHECK (sterne BETWEEN 1 AND 5),
+
+    -- Kategorien für Stats / Spiderchart
+    verstandlichkeit FLOAT NOT NULL CHECK (verstandlichkeit BETWEEN 1 AND 5),
+    fairness FLOAT NOT NULL CHECK (fairness BETWEEN 1 AND 5),
+    sympathie FLOAT NOT NULL CHECK (sympathie BETWEEN 1 AND 5),
+    organisation FLOAT NOT NULL CHECK (organisation BETWEEN 1 AND 5),
+    fachwissen FLOAT NOT NULL CHECK (fachwissen BETWEEN 1 AND 5),
+
     kommentar TEXT,
     datum DATETIME DEFAULT CURRENT_TIMESTAMP,
+
     schueler_id INT NOT NULL,
     lehrer_id INT NOT NULL,
+
     FOREIGN KEY (schueler_id) REFERENCES schueler(id),
     FOREIGN KEY (lehrer_id) REFERENCES lehrer(id)
 );
