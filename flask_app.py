@@ -126,6 +126,9 @@ def lehrer_liste():
 @login_required
 def lehrer_detail(lehrer_id):
 
+    # ----------------
+    # Bewertung speichern
+    # ----------------
     if request.method == "POST":
         v = float(request.form["verstandlichkeit"])
         f = float(request.form["fairness"])
@@ -137,15 +140,29 @@ def lehrer_detail(lehrer_id):
         sterne = round((v + f + s + o + fw) / 5, 2)
 
         db_write("""
-        INSERT INTO bewertung 
-        (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            INSERT INTO bewertung 
+            (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, (sterne, v, f, s, o, fw, kommentar, current_user.id, lehrer_id))
 
         return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
 
-    lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
+    # ----------------
+    # Lehrer + Durchschnitt laden
+    # ----------------
+    lehrer = db_read("""
+        SELECT l.*,
+               ROUND(AVG(b.sterne),1) AS avg_sterne,
+               COUNT(b.id) AS anzahl
+        FROM lehrer l
+        LEFT JOIN bewertung b ON l.id = b.lehrer_id
+        WHERE l.id=%s
+        GROUP BY l.id
+    """, (lehrer_id,), single=True)
 
+    # ----------------
+    # Bewertungen laden
+    # ----------------
     bewertungen = db_read("""
         SELECT b.sterne, b.kommentar, b.datum, s.username
         FROM bewertung b
@@ -154,6 +171,9 @@ def lehrer_detail(lehrer_id):
         ORDER BY b.datum DESC
     """, (lehrer_id,))
 
+    # ----------------
+    # Spider-Chart Stats
+    # ----------------
     stats = db_read("""
         SELECT 
         ROUND(AVG(verstandlichkeit),2) AS verstandlichkeit,
@@ -165,8 +185,14 @@ def lehrer_detail(lehrer_id):
         WHERE lehrer_id=%s
     """, (lehrer_id,), single=True)
 
-    if not stats["verstandlichkeit"]:
-        stats = {"verstandlichkeit":0,"fairness":0,"sympathie":0,"organisation":0,"fachwissen":0}
+    if not stats or stats["verstandlichkeit"] is None:
+        stats = {
+            "verstandlichkeit": 0,
+            "fairness": 0,
+            "sympathie": 0,
+            "organisation": 0,
+            "fachwissen": 0
+        }
 
     return render_template(
         "lehrer_detail.html",
@@ -174,6 +200,7 @@ def lehrer_detail(lehrer_id):
         bewertungen=bewertungen,
         stats=stats
     )
+
 
 # --------------------
 # Admin
