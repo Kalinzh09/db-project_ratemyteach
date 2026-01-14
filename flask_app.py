@@ -136,16 +136,7 @@ def lehrer_detail(lehrer_id):
 
         sterne = round((v + f + s + o + fw) / 5, 2)
 
-       # prüfen ob der Schüler diesen Lehrer schon bewertet hat
-exists = db_read("""
-    SELECT id FROM bewertung
-    WHERE schueler_id = %s AND lehrer_id = %s
-""", (current_user.id, lehrer_id), single=True)
-
-if exists:
-    # schon bewertet → einfach zurück (oder später Meldung anzeigen)
-    return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
-
+      
 db_write("""
     INSERT INTO bewertung 
     (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
