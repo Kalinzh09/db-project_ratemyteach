@@ -27,9 +27,7 @@
     <canvas id="radarChart"></canvas>
 </div>
 
-anzbewertungenuser = {{ anzbewertungenuser }}
-anzbewertungenuser = {{ anzbewertungenuser.anzahl }}
-anzbewertungenuser = {{ anzbewertungenuser.ANZAHL }}
+anzbewertungenuser = {{ str(anzbewertungenuser) }}
 {% if anzbewertungenuser == 0 %}
 <!-- ================= FORM ================= -->
 
