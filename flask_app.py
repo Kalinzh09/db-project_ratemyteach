@@ -135,17 +135,16 @@ def lehrer_detail(lehrer_id):
         kommentar = request.form.get("kommentar")
 
         sterne = round((v + f + s + o + fw) / 5, 2)
+        
+        db_write("""
+        INSERT INTO bewertung 
+        (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        """, (sterne, v, f, s, o, fw, kommentar, current_user.id, lehrer_id))
 
-      
-db_write("""
-    INSERT INTO bewertung 
-    (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
-    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-""", (sterne, v, f, s, o, fw, kommentar, current_user.id, lehrer_id))
+        return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
 
-return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
-
-lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
+    lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
 
     bewertungen = db_read("""
         SELECT b.sterne, b.kommentar, b.datum, s.username
