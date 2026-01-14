@@ -166,3 +166,65 @@ button {
         font-size: 1.8rem;
     }
 }
+
+/* ================= STECKBRIEF ================= */
+
+.steckbrief {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1rem;
+    align-items: center;
+}
+
+.steckbrief h2 {
+    grid-column: span 2;
+    margin-bottom: 0.5rem;
+}
+
+.steckbrief p {
+    margin: 0.2rem 0;
+    font-size: 0.95rem;
+}
+
+/* ================= STATS ================= */
+
+canvas {
+    max-width: 100%;
+    margin-top: 0.8rem;
+}
+
+/* ================= SLIDER ================= */
+
+input[type="range"] {
+    accent-color: #4f46e5;
+    padding: 0;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.6rem;
+}
+
+/* Live-Wert neben Slider */
+.slider-value {
+    float: right;
+    font-weight: 500;
+    color: #4f46e5;
+}
+
+/* ================= BEWERTUNGEN ================= */
+
+.card strong {
+    font-size: 1.05rem;
+}
+
+/* ================= MOBILE STECKBRIEF ================= */
+
+@media (max-width: 600px) {
+    .steckbrief {
+        grid-template-columns: 1fr;
+    }
+}
+
