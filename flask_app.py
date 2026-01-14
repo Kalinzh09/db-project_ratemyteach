@@ -136,13 +136,24 @@ def lehrer_detail(lehrer_id):
 
         sterne = round((v + f + s + o + fw) / 5, 2)
 
-        db_write("""
-        INSERT INTO bewertung 
-        (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        """, (sterne, v, f, s, o, fw, kommentar, current_user.id, lehrer_id))
+       # prüfen ob der Schüler diesen Lehrer schon bewertet hat
+exists = db_read("""
+    SELECT id FROM bewertung
+    WHERE schueler_id = %s AND lehrer_id = %s
+""", (current_user.id, lehrer_id), single=True)
 
-        return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
+if exists:
+    # schon bewertet → einfach zurück (oder später Meldung anzeigen)
+    return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
+
+db_write("""
+    INSERT INTO bewertung 
+    (sterne, verstandlichkeit, fairness, sympathie, organisation, fachwissen, kommentar, schueler_id, lehrer_id)
+    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+""", (sterne, v, f, s, o, fw, kommentar, current_user.id, lehrer_id))
+
+return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
+
 
     lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
 
