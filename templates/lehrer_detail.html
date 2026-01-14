@@ -7,7 +7,7 @@
 <title>{{ lehrer.vorname }} {{ lehrer.name }}</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-<!-- Chart.js für Spider Chart -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -18,6 +18,22 @@
 </header>
 
 <div class="container">
+
+<!-- ================= STECKBRIEF ================= -->
+
+<div class="card steckbrief">
+    <h2>{{ lehrer.vorname }} {{ lehrer.name }}</h2>
+    <p><strong>Fach:</strong> {{ lehrer.fach }}</p>
+    <p><strong>Email:</strong> {{ lehrer.email }}</p>
+
+    <p><strong>Durchschnitt:</strong>
+        {% if lehrer.avg_sterne %}
+            ⭐ {{ lehrer.avg_sterne }} / 5 ({{ lehrer.anzahl }} Bewertungen)
+        {% else %}
+            Noch keine Bewertungen
+        {% endif %}
+    </p>
+</div>
 
 <!-- ================= STATS ================= -->
 
@@ -85,13 +101,16 @@ labels: ["Verständlichkeit", "Fairness", "Sympathie", "Organisation", "Fachwiss
 datasets: [{
 label: "Durchschnitt",
 data: [
-{{ stats.verstandlichkeit }},
-{{ stats.fairness }},
-{{ stats.sympathie }},
-{{ stats.organisation }},
-{{ stats.fachwissen }}
+{{ lehrer.verstandlichkeit or 0 }},
+{{ lehrer.fairness or 0 }},
+{{ lehrer.sympathie or 0 }},
+{{ lehrer.organisation or 0 }},
+{{ lehrer.fachwissen or 0 }}
 ],
-fill: true
+fill: true,
+backgroundColor: "rgba(79,70,229,0.2)",
+borderColor: "#4f46e5",
+pointBackgroundColor: "#4f46e5"
 }]
 };
 
@@ -99,6 +118,7 @@ new Chart(document.getElementById("radarChart"), {
 type: "radar",
 data: data,
 options: {
+responsive: true,
 scales: {
 r: {
 min: 0,
