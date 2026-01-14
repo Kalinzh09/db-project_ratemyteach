@@ -155,7 +155,7 @@ def lehrer_detail(lehrer_id):
     """, (lehrer_id,))
 
     anzbewertungenuser = db_read("""
-        SELECT COUNT(*)
+        SELECT COUNT(*) AS anzahl
         FROM bewertung b
         WHERE b.lehrer_id=%s
         AND b.schueler_id=%s
