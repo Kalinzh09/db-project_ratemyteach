@@ -154,13 +154,14 @@ def lehrer_detail(lehrer_id):
         ORDER BY b.datum DESC
     """, (lehrer_id,))
 
-    anzbewertungenuser = db_read("""
-        SELECT COUNT(*)
-        FROM bewertung b
-        WHERE b.lehrer_id=%s
-        AND b.schueler_id=%s
-    """, (lehrer_id,current_user.id))
-
+    #anzbewertungenuser = db_read("""
+     #   SELECT COUNT(*)
+      #  FROM bewertung b
+       # WHERE b.lehrer_id=%s
+        #AND b.schueler_id=%s
+    #""", (lehrer_id,current_user.id))
+    anzbewertungenuser=5
+    
     stats = db_read("""
         SELECT 
         ROUND(AVG(verstandlichkeit),2) AS verstandlichkeit,
