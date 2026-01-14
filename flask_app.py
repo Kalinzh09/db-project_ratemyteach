@@ -146,7 +146,7 @@ db_write("""
 return redirect(url_for("lehrer_detail", lehrer_id=lehrer_id))
 
 
-    lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
+lehrer = db_read("SELECT * FROM lehrer WHERE id=%s", (lehrer_id,), single=True)
 
     bewertungen = db_read("""
         SELECT b.sterne, b.kommentar, b.datum, s.username
