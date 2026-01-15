@@ -25,7 +25,7 @@
             gap: 10px;
             margin-top: 15px;
         }
-        
+
         /* Sowohl Links als auch Formulare gleich breit */
         .button-row a,
         .button-row form {
@@ -42,10 +42,9 @@
             border: none;
             cursor: pointer;
             text-align: center;
-            display: inline-block;  /* sicherstellen, dass width greift */
-            box-sizing: border-box; /* Padding zählt zur Breite */
+            display: inline-block;
+            box-sizing: border-box;
         }
-        
 
         .button {
             background-color: #3498db;
@@ -64,13 +63,63 @@
         .button.delete:hover {
             background-color: #c0392b;
         }
+
+        /* ---------- DARK MODE FIX (nur Dashboard) ---------- */
+        body.dark .bewertung-card {
+            background: #0b1220;
+            color: #e5e7eb;
+            box-shadow: 0 4px 10px rgba(255,255,255,0.03);
+        }
+
+        body.dark .dashboard-container h3,
+        body.dark .dashboard-container p {
+            color: #e5e7eb;
+        }
+
+        /* optional: Buttons im Dark Mode etwas dunkler */
+        body.dark .button {
+            background-color: #334155;
+        }
+        body.dark .button:hover {
+            background-color: #475569;
+        }
+        body.dark .button.delete {
+            background-color: #991b1b;
+        }
+        body.dark .button.delete:hover {
+            background-color: #7f1d1d;
+        }
+
+        /* header rechts (für den button + link) */
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #darkmode-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.35);
+            color: white;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        #darkmode-btn:hover {
+            border-color: rgba(255,255,255,0.7);
+        }
     </style>
 </head>
 <body>
 
 <header>
     <h1>Mein Dashboard</h1>
-    <a href="/" style="color:white;">Menü</a>
+
+    <div class="header-right">
+        <button id="darkmode-btn" onclick="toggleDarkMode()">🌙</button>
+        <a href="/" style="color:white;">Menü</a>
+    </div>
 </header>
 
 <div class="dashboard-container">
@@ -86,8 +135,6 @@
                     <a class="button" href="{{ url_for('edit_bewertung', bewertung_id=b['id']) }}">
                         Bearbeiten
                     </a>
-
-
 
                     <form method="post"
                         action="{{ url_for('delete_bewertung', bewertung_id=b['id']) }}"
@@ -105,6 +152,16 @@
     {% endif %}
 
 </div>
+
+<script>
+function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem("darkmode", document.body.classList.contains("dark") ? "on" : "off");
+}
+if (localStorage.getItem("darkmode") === "on") {
+    document.body.classList.add("dark");
+}
+</script>
 
 </body>
 </html>
