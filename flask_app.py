@@ -267,15 +267,26 @@ def edit_bewertung(bewertung_id):
         abort(404)
 
     if request.method == "POST":
-        sterne = float(request.form["sterne"])
-        kommentar = request.form.get("kommentar")
+        vv = float(request.form["verstandlichkeit"])
+        ff = float(request.form["fairness"])
+        ss = float(request.form["sympathie"])
+        oo = float(request.form["organisation"])
+        fww = float(request.form["fachwissen"])
+        kommentarr = request.form.get("kommentar")
 
+        sternee = round((v + f + s + o + fw) / 5, 2)
+        
         db_write("""
-            UPDATE bewertung
-            SET sterne=%s,
-                kommentar=%s
-            WHERE id=%s AND schueler_id=%s
-        """, (sterne, kommentar, bewertung_id, current_user.id))
+        UPDATE bewertung 
+        SET sterne=%s
+            verstandlichkeit=%s,
+            fairness=%s,
+            sympathie=%s,
+            organisation=%s,
+            fachwissen=%s,
+            kommentar=%s
+        WHERE id=%s AND schueler_id=%s
+        """, (sternee, vv, ff, ss, oo, fww, kommentarr, current_user.id, lehrer_id))
 
         return redirect(url_for("dashboard"))
 
