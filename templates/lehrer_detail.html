@@ -27,8 +27,8 @@
     <canvas id="radarChart"></canvas>
 </div>
 
-<!--anzbewertungenuser = {{ str(anzbewertungenuser) }}-->
-<!--{% if anzbewertungenuser == 0 %}-->
+anzbewertungenuser = {{ str(anzbewertungenuser) }}
+{% if anzbewertungenuser == 0 %}
 <!-- ================= FORM ================= -->
 
 <div class="card">
@@ -56,7 +56,7 @@
 <button type="submit">Absenden</button>
 </form>
 </div>
-<!--{% endif %}-->
+{% endif %}
 <!-- ================= BEWERTUNGEN ================= -->
 
 {% for b in bewertungen %}
