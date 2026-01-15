@@ -159,7 +159,7 @@ def lehrer_detail(lehrer_id):
         FROM bewertung b
         WHERE b.lehrer_id=%s
         AND b.schueler_id=%s
-    """, (lehrer_id, current_user.id))
+    """, (lehrer_id, current_user.id), single=True)
     
     
     stats = db_read("""
