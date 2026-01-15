@@ -26,21 +26,33 @@
         }
 
         /* ---------------- Header / Navbar ---------------- */
-       <nav style="background:#4f46e5; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center;">
-    <div>
-        <a href="/" style="color:white; font-weight:bold; font-size:1.2rem;">Rate My Teacher</a>
+ <nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Rate My Teacher</a>
     </div>
-    <div style="display:flex; gap:1rem; align-items:center;">
+
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+
         {% if current_user.is_authenticated %}
-            <span style="color:white;">Hallo, {{ current_user.username }}</span>
-            <a href="{{ url_for('logout') }}" style="color:white;">Logout</a>
+          <li><a href="#">Hallo, {{ current_user.username }}</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
-            <a href="{{ url_for('login') }}" style="color:white;">Login</a>
-            <a href="{{ url_for('register') }}" style="color:white;">Registrieren</a>
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('register') }}">Registrieren</a></li>
         {% endif %}
-        <button id="darkmode-btn" onclick="toggleDarkMode()" style="padding:0.4rem 0.8rem; border-radius:6px; border:none; cursor:pointer;">🌙 Dark Mode</button>
+
+        <!-- Dark Mode Button -->
+        <li>
+          <a href="javascript:void(0);" onclick="toggleDarkMode()" style="color:white;">🌙 Dark Mode</a>
+        </li>
+
+      </ul>
     </div>
+  </div>
 </nav>
+
 
         /* ---------------- Container ---------------- */
         .container {
