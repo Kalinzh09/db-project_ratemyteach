@@ -154,12 +154,14 @@ def lehrer_detail(lehrer_id):
         ORDER BY b.datum DESC
     """, (lehrer_id,))
 
-    anzbewertungenuser = db_read("""
-        SELECT COUNT(*)
+    row = db_read("""
+        SELECT COUNT(*) AS anzahl
         FROM bewertung b
         WHERE b.lehrer_id=%s
         AND b.schueler_id=%s
     """, (lehrer_id, current_user.id), single=True)
+
+    anzbewertungenuser = row["anzahl"]
     
     
     stats = db_read("""
