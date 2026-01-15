@@ -179,8 +179,9 @@ def lehrer_detail(lehrer_id):
     return render_template(
         "lehrer_detail.html",
         lehrer=lehrer,
+        anzbewertungenuser=anzbewertungenuser,
         bewertungen=bewertungen,
-        stats=stats
+        stats=stats        
     )
 
 # --------------------
