@@ -251,3 +251,39 @@ body.dark .button:hover {
   padding: 0.55rem 1rem;
   line-height: 1.2;
 }
+
+.rating {
+    margin: 6px 0;
+}
+
+.star {
+    font-size: 1.3rem;
+    margin-right: 2px;
+}
+
+.star.full {
+    color: gold;
+}
+
+.star.half {
+    position: relative;
+    color: gold;
+}
+
+.star.half::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+    color: gold;
+}
+
+.star.empty {
+    color: #9ca3af;
+}
+
+/* Dark Mode */
+body.dark .star.empty {
+    color: #475569;
+}
