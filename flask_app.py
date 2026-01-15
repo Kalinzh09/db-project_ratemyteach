@@ -274,7 +274,7 @@ def edit_bewertung(bewertung_id):
         fww = float(request.form["fachwissen"])
         kommentarr = request.form.get("kommentar")
 
-        sternee = round((v + f + s + o + fw) / 5, 2)
+        sternee = round((vv + ff+ ss + oo + fww) / 5, 2)
         
         db_write("""
         UPDATE bewertung 
