@@ -286,7 +286,7 @@ def edit_bewertung(bewertung_id):
             fachwissen=%s,
             kommentar=%s
         WHERE id=%s AND schueler_id=%s
-        """, (sternee, vv, ff, ss, oo, fww, kommentarr, current_user.id, lehrer_id))
+        """, (sternee, vv, ff, ss, oo, fww, kommentarr, bewertung_id, current_user.id))
 
         return redirect(url_for("dashboard"))
 
