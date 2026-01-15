@@ -5,48 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Rate My Teacher{% endblock %}</title>
 
-    <!-- CSS -->
     <style>
-        /* ---------------- RESET & FONT ---------------- */
-        * { box-sizing: border-box; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 0; }
-
-        body {
-            background: #f4f6fb;
-            color: #1f2933;
+        /* ---------------- Reset + Fonts ---------------- */
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
-        /* ---------------- HEADER ---------------- */
+        body {
+            margin: 0;
+            background: #f4f6fb;
+            color: #1f2933;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        a {
+            text-decoration: none;
+            color: #4f46e5;
+            font-weight: 500;
+        }
+
+        /* ---------------- Header / Navbar ---------------- */
         header, nav {
             background: #4f46e5;
             color: white;
             padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         header h1, nav h1 {
+            margin: 0;
             font-size: 1.6rem;
         }
 
-        nav a {
-            text-decoration: none;
-            color: white;
-            margin-left: 1rem;
-            font-weight: 500;
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+            padding: 0;
+            margin: 0;
+            align-items: center;
         }
 
-        /* ---------------- CONTAINER ---------------- */
+        nav li {
+            display: inline;
+        }
+
+        nav a, nav button {
+            color: white;
+            font-weight: 500;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        nav button:hover, nav a:hover {
+            opacity: 0.8;
+        }
+
+        #darkmode-btn {
+            margin-left: 0.5rem;
+        }
+
+        /* ---------------- Container ---------------- */
         .container {
             max-width: 960px;
             margin: 2rem auto;
-            padding: 1rem 1.5rem;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            padding: 1rem 2rem;
         }
 
-        /* ---------------- CARDS ---------------- */
+        /* ---------------- Cards ---------------- */
         .card {
             background: white;
             border-radius: 14px;
@@ -61,7 +89,22 @@
             box-shadow: 0 14px 30px rgba(0,0,0,0.08);
         }
 
-        /* ---------------- FORM & BUTTONS ---------------- */
+        /* ---------------- Buttons ---------------- */
+        .button, button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .button:hover, button:hover {
+            opacity: 0.9;
+        }
+
+        /* ---------------- Form Inputs ---------------- */
         input, textarea, select {
             width: 100%;
             padding: 0.6rem;
@@ -70,83 +113,90 @@
             margin-bottom: 0.8rem;
         }
 
-        button, .button {
-            background: #4f46e5;
-            color: white;
-            border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
+        /* ---------------- Headings ---------------- */
+        h1, h2 {
+            margin-bottom: 0.8rem;
         }
 
-        button:hover, .button:hover { opacity: 0.9; }
-
-        /* ---------------- STERNE ---------------- */
-        .star { font-size: 1.4rem; margin-right: 0.1rem; }
-        .star.full { color: gold; }
-        .star.half { color: gold; position: relative; }
-        .star.half::before { content:'★'; position: absolute; left:0; width:50%; overflow:hidden; display:inline-block; color: gold; }
-        .star.empty { color: #ccc; }
-
-        /* Klickbare Sterne für Formulare */
-        .star-rating .star { font-size: 1.6rem; cursor: pointer; color: #ccc; transition: color 0.2s; }
-        .star-rating .star.selected, .star-rating .star.hover { color: gold; }
-
-        /* ---------------- DARK MODE ---------------- */
+        /* ---------------- Dark Mode ---------------- */
         body.dark {
             background: #0f172a;
             color: #e5e7eb;
         }
 
-        body.dark .container { background: #020617; box-shadow: 0 6px 18px rgba(255,255,255,0.03); }
-        body.dark .card { background: #020617; box-shadow: 0 6px 18px rgba(255,255,255,0.03); }
-        body.dark header, body.dark nav { background: #020617; }
-        body.dark nav a { color: #e5e7eb; }
-        body.dark input, body.dark textarea, body.dark select { background: #020617; color: #f9fafb; border: 1px solid #1e293b; }
-        body.dark button, body.dark .button { background: #334155; }
-        body.dark button:hover, body.dark .button:hover { background: #475569; }
+        body.dark .container {
+            background: #020617;
+            box-shadow: 0 6px 18px rgba(255,255,255,0.03);
+        }
 
-        /* ---------------- RESPONSIVE ---------------- */
+        body.dark .card {
+            background: #1e293b;
+            box-shadow: 0 6px 18px rgba(255,255,255,0.05);
+        }
+
+        body.dark a, body.dark nav a, body.dark nav button {
+            color: #e5e7eb;
+        }
+
+        body.dark input, body.dark textarea, body.dark select {
+            background: #1e293b;
+            color: #e5e7eb;
+            border: 1px solid #334155;
+        }
+
+        body.dark button, body.dark .button {
+            background: #334155;
+        }
+
+        body.dark button:hover, body.dark .button:hover {
+            background: #475569;
+        }
+
+        /* ---------------- Mobile Anpassungen ---------------- */
         @media (max-width: 600px) {
-            header, nav { flex-direction: column; gap: 0.4rem; text-align: center; }
-            header h1 { font-size: 1.3rem; }
-            .container { margin: 1rem auto; }
-            .card { padding: 1rem; }
-            h2 { font-size: 1.1rem; }
-            .star-rating .star { font-size: 1.8rem; }
-            button, .button { width: 100%; }
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <h1>Rate My Teacher</h1>
-        <button onclick="toggleDarkMode()" id="darkmode-btn" style="margin-top:4px;">🌙 Dark Mode</button>
-    </header>
-
+    <!-- ---------------- Navbar ---------------- -->
     <nav>
-        <a href="{{ url_for('lehrer_liste') }}">Lehrer</a>
-        {% if current_user.is_authenticated %}
-            <span>Hallo, {{ current_user.username }}</span>
-            <a href="{{ url_for('logout') }}">Logout</a>
-        {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Registrieren</a>
-        {% endif %}
+        <ul>
+            <li><a href="/">Home</a></li>
+
+            {% if current_user.is_authenticated %}
+                <li><span>Hallo, {{ current_user.username }}</span></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('register') }}">Registrieren</a></li>
+            {% endif %}
+
+            <li>
+                <button id="darkmode-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+            </li>
+        </ul>
     </nav>
 
+    <!-- ---------------- Content ---------------- -->
     <div class="container">
         {% block content %}{% endblock %}
     </div>
 
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- ---------------- JavaScript ---------------- -->
     <script>
         function toggleDarkMode() {
             document.body.classList.toggle("dark");
-            if(document.body.classList.contains("dark")){
+
+            if (document.body.classList.contains("dark")) {
                 localStorage.setItem("darkmode", "on");
             } else {
                 localStorage.setItem("darkmode", "off");
@@ -154,7 +204,7 @@
         }
 
         // Dark Mode beim Laden prüfen
-        if(localStorage.getItem("darkmode") === "on"){
+        if (localStorage.getItem("darkmode") === "on") {
             document.body.classList.add("dark");
         }
     </script>
