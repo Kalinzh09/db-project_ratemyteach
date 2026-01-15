@@ -245,3 +245,9 @@ body.dark button:hover,
 body.dark .button:hover {
     background: #475569;
 }
+
+.button {
+  display: inline-block;
+  padding: 0.55rem 1rem;
+  line-height: 1.2;
+}
