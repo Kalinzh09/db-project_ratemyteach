@@ -20,35 +20,43 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         }
 
+        /* ---------- BUTTON ROW (FIXED) ---------- */
         .button-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             margin-top: 15px;
+            align-items: stretch;
         }
 
-        /* Links + Formulare gleich breit */
         .button-row > a,
         .button-row > form {
             flex: 1;
+            margin: 0;
+            display: flex;
         }
 
-        /* ✅ BEIDE Buttons exakt gleich groß */
         .button-row a.button,
         .button-row button {
             width: 100%;
-            height: 48px;                 /* ⭐ FIX: gleiche Höhe */
-            display: flex;                 /* ⭐ FIX: gleiches Layout */
-            align-items: center;           /* ⭐ FIX */
-            justify-content: center;       /* ⭐ FIX */
-            padding: 0;                    /* ⭐ FIX: kein Unterschied durch Padding */
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
             font-size: 15px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
             box-sizing: border-box;
             text-decoration: none;
+
+            padding: 0;
+            line-height: 1;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
+        /* ---------- BUTTON STYLES ---------- */
         .button {
             background-color: #3498db;
             color: white;
@@ -65,57 +73,31 @@
         .button.delete:hover {
             background-color: #c0392b;
         }
-        /* ---------- FIX: Bearbeiten & Löschen exakt gleich hoch ---------- */
-.button-row a.button,
-.button-row button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    height: 44px;         /* <- gleiche fixe Höhe */
-    padding: 0 12px;      /* <- kein vertikales padding mehr */
-    line-height: 1;       /* <- verhindert “extra” Höhe beim <a> */
-    font-size: 15px;
-
-    box-sizing: border-box;
-}
-
-/* Button defaults killen (Browser macht sonst oft extra Höhe) */
-.button-row button {
-    appearance: none;
-    -webkit-appearance: none;
-    border: none;
-}
-
-
-        /* ---------- DARK MODE FIX (nur Dashboard) ---------- */
+        /* ---------- DARK MODE ---------- */
         body.dark .bewertung-card {
             background: #0b1220;
             color: #e5e7eb;
             box-shadow: 0 4px 10px rgba(255,255,255,0.03);
         }
 
-        body.dark .dashboard-container h3,
-        body.dark .dashboard-container p,
-        body.dark .dashboard-container strong {
-            color: #e5e7eb;
-        }
-
-        /* Buttons im Dark Mode */
         body.dark .button {
             background-color: #334155;
         }
+
         body.dark .button:hover {
             background-color: #475569;
         }
+
         body.dark .button.delete {
             background-color: #991b1b;
         }
+
         body.dark .button.delete:hover {
             background-color: #7f1d1d;
         }
 
-        /* header rechts */
+        /* ---------- HEADER ---------- */
         .header-right {
             display: flex;
             gap: 12px;
@@ -129,10 +111,6 @@
             padding: 8px 10px;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 0.95rem;
-        }
-        #darkmode-btn:hover {
-            border-color: rgba(255,255,255,0.7);
         }
     </style>
 </head>
@@ -140,7 +118,6 @@
 
 <header>
     <h1>Mein Dashboard</h1>
-
     <div class="header-right">
         <button id="darkmode-btn" type="button" onclick="toggleDarkMode()">🌙</button>
         <a href="/" style="color:white;">Menü</a>
@@ -149,38 +126,41 @@
 
 <div class="dashboard-container">
 
-    {% if bewertungen %}
-        {% for b in bewertungen %}
-            <div class="bewertung-card">
-                <h3>{{ b['vorname'] }} {{ b['name'] }}</h3>
-                <p><strong>Sterne:</strong> {{ b['sterne'] }} / 5</p>
-                <p>{{ b['kommentar'] or "Kein Kommentar" }}</p>
+{% if bewertungen %}
+    {% for b in bewertungen %}
+        <div class="bewertung-card">
+            <h3>{{ b['vorname'] }} {{ b['name'] }}</h3>
+            <p><strong>Sterne:</strong> {{ b['sterne'] }} / 5</p>
+            <p>{{ b['kommentar'] or "Kein Kommentar" }}</p>
 
-                <div class="button-row">
-                    <a class="button" href="{{ url_for('edit_bewertung', bewertung_id=b['id']) }}">
-                        Bearbeiten
-                    </a>
+            <div class="button-row">
+                <a class="button" href="{{ url_for('edit_bewertung', bewertung_id=b['id']) }}">
+                    Bearbeiten
+                </a>
 
-                    <form method="post"
-                          action="{{ url_for('delete_bewertung', bewertung_id=b['id']) }}"
-                          onsubmit="return confirm('Bewertung wirklich löschen?');">
-                        <button class="button delete" type="submit">
-                            Löschen
-                        </button>
-                    </form>
-                </div>
+                <form method="post"
+                      action="{{ url_for('delete_bewertung', bewertung_id=b['id']) }}"
+                      onsubmit="return confirm('Bewertung wirklich löschen?');">
+                    <button class="button delete" type="submit">
+                        Löschen
+                    </button>
+                </form>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>Noch keine Bewertungen abgegeben.</p>
-    {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Noch keine Bewertungen abgegeben.</p>
+{% endif %}
 
 </div>
 
 <script>
 function toggleDarkMode() {
     document.body.classList.toggle("dark");
-    localStorage.setItem("darkmode", document.body.classList.contains("dark") ? "on" : "off");
+    localStorage.setItem(
+        "darkmode",
+        document.body.classList.contains("dark") ? "on" : "off"
+    );
 }
 if (localStorage.getItem("darkmode") === "on") {
     document.body.classList.add("dark");
