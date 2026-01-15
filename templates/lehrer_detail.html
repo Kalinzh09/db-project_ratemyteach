@@ -69,15 +69,15 @@
 {% set empty = 5 - full - half %}
 
 
-{% for i in range(full_stars) %}
+{% for i in range(full) %}
     <span class="star full">★</span>
 {% endfor %}
 
-{% if half_star %}
+{% if half %}
     <span class="star half">★</span>
 {% endif %}
 
-{% for i in range(empty_stars) %}
+{% for i in range(empty) %}
     <span class="star empty">☆</span>
 {% endfor %}
 
