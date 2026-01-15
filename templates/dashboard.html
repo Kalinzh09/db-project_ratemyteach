@@ -130,7 +130,26 @@
     {% for b in bewertungen %}
         <div class="bewertung-card">
             <h3>{{ b['vorname'] }} {{ b['name'] }}</h3>
-            <p><strong>Sterne:</strong> {{ b['sterne'] }} / 5</p>
+            <p class="rating">
+    {% set full = b.sterne|int %}
+    {% set half = 1 if (b.sterne - full) >= 0.5 else 0 %}
+    {% set empty = 5 - full - half %}
+
+    {% for i in range(full) %}
+        <span class="star full">★</span>
+    {% endfor %}
+
+    {% if half %}
+        <span class="star half">★</span>
+    {% endif %}
+
+    {% for i in range(empty) %}
+        <span class="star empty">☆</span>
+    {% endfor %}
+
+    <span style="margin-left:6px;">{{ b.sterne }}/5</span>
+</p>
+
             <p>{{ b['kommentar'] or "Kein Kommentar" }}</p>
 
             <div class="button-row">
