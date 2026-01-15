@@ -39,7 +39,9 @@
        value="{{ bewertung.fachwissen }}">
 
 
-<textarea name="kommentar" placeholder="Kommentar..."></textarea>
+<label>Kommentar</label>
+<textarea name="kommentar" required>{{ bewertung.kommentar }}</textarea>
+
 
 <button type="submit" onclick="this.disabled=true; this.innerText='Wird gesendet…'; this.form.submit();">
     Absenden
