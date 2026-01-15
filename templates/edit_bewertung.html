@@ -19,19 +19,25 @@
 <form method="post">
 
 <label>Verständlichkeit</label>
-<input type="range" min="1" max="5" step="0.5" name="verstandlichkeit" required>
+<input type="range" min="1" max="5" step="0.5" name="verstandlichkeit" required
+       value="{{ bewertung.verstandlichkeit }}">
 
 <label>Fairness</label>
-<input type="range" min="1" max="5" step="0.5" name="fairness" required>
+<input type="range" min="1" max="5" step="0.5" name="fairness" required
+       value="{{ bewertung.fairness }}">
 
 <label>Sympathie</label>
-<input type="range" min="1" max="5" step="0.5" name="sympathie" required>
+<input type="range" min="1" max="5" step="0.5" name="sympathie" required
+       value="{{ bewertung.sympathie }}">
 
 <label>Organisation</label>
-<input type="range" min="1" max="5" step="0.5" name="organisation" required>
+<input type="range" min="1" max="5" step="0.5" name="organisation" required
+       value="{{ bewertung.organisation }}">
 
 <label>Fachwissen</label>
-<input type="range" min="1" max="5" step="0.5" name="fachwissen" required>
+<input type="range" min="1" max="5" step="0.5" name="fachwissen" required
+       value="{{ bewertung.fachwissen }}">
+
 
 <textarea name="kommentar" placeholder="Kommentar..."></textarea>
 
