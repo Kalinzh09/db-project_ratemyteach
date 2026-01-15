@@ -54,7 +54,10 @@
 
 <textarea name="kommentar" placeholder="Kommentar..."></textarea>
 
-<button type="submit">Absenden</button>
+<button type="submit" onclick="this.disabled=true; this.innerText='Wird gesendet…'; this.form.submit();">
+    Absenden
+</button>
+
 </form>
 </div>
 {% endif %}
