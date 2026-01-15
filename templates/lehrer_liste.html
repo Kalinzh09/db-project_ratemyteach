@@ -13,6 +13,10 @@
     <h1>RateMyTeach</h1>
 
     <nav class="menu">
+        <button type="button" class="darkmode-btn" onclick="toggleDarkMode()" title="Dark Mode">
+            🌙
+        </button>
+
         <a href="{{ url_for('lehrer_liste') }}">🏠 Start</a>
         <a href="{{ url_for('dashboard') }}">📊 Dashboard</a>
         <a href="{{ url_for('logout') }}">🚪 Logout</a>
@@ -21,7 +25,6 @@
 
 <div class="container">
 
-    {# ADMIN: Lehrer hinzufügen #}
     {% if is_admin(current_user) %}
         <div style="margin-bottom: 20px;">
             <a class="button" href="{{ url_for('add_lehrer') }}">
@@ -65,7 +68,6 @@
                 Bewerten / Details
             </a>
 
-            {# ADMIN: Lehrer löschen #}
             {% if is_admin(current_user) %}
                 <form
                     method="POST"
@@ -84,30 +86,38 @@
 </div>
 
 <style>
-/* Header & Menu */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 .menu a {
     color: white;
     margin-left: 15px;
     text-decoration: none;
     font-weight: bold;
 }
-
 .menu a:hover {
     text-decoration: underline;
 }
 
+.darkmode-btn{
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-right: 6px;
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+.darkmode-btn:hover{
+    background: rgba(255,255,255,0.15);
+}
+
 /* Sterne */
 .star.full { color: gold; }
-.star.half {
-    color: gold;
-    position: relative;
-}
+.star.half { color: gold; position: relative; }
 .star.half::before {
     content: '★';
     position: absolute;
@@ -120,13 +130,42 @@
 .star.empty { color: #ccc; }
 
 /* Buttons */
-.button.danger {
-    background-color: #c0392b;
+.button.danger { background-color: #c0392b; }
+.button.danger:hover { background-color: #a93226; }
+
+/* Dark Mode */
+body.dark{
+    background: #0f172a;
+    color: #e5e7eb;
 }
-.button.danger:hover {
-    background-color: #a93226;
+body.dark .card{
+    background: #020617;
+    box-shadow: 0 10px 25px rgba(255,255,255,0.03);
+}
+body.dark header{
+    background: #020617;
+}
+body.dark a{
+    color: #93c5fd;
+}
+body.dark .badge{
+    background: #111827;
+    color: #e5e7eb;
 }
 </style>
+
+<script>
+function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+        "darkmode",
+        document.body.classList.contains("dark") ? "on" : "off"
+    );
+}
+if (localStorage.getItem("darkmode") === "on") {
+    document.body.classList.add("dark");
+}
+</script>
 
 </body>
 </html>
