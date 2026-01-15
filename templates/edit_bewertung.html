@@ -13,20 +13,33 @@
     <a href="{{ url_for('dashboard') }}" style="color:white;">Zurück</a>
 </header>
 
-<div class="container">
-    <div class="card">
-        <form method="post">
+<div class="card">
+<h3>Bewertung abgeben</h3>
 
-            <label>Sterne (1–5)</label>
-            <input type="number" name="sterne" min="1" max="5"
-                   value="{{ bewertung.sterne }}" required>
+<form method="post">
 
-            <label>Kommentar</label>
-            <textarea name="kommentar">{{ bewertung.kommentar }}</textarea>
+<label>Verständlichkeit</label>
+<input type="range" min="1" max="5" step="0.5" name="verstandlichkeit" required>
 
-            <button class="button" type="submit">Speichern</button>
-        </form>
-    </div>
+<label>Fairness</label>
+<input type="range" min="1" max="5" step="0.5" name="fairness" required>
+
+<label>Sympathie</label>
+<input type="range" min="1" max="5" step="0.5" name="sympathie" required>
+
+<label>Organisation</label>
+<input type="range" min="1" max="5" step="0.5" name="organisation" required>
+
+<label>Fachwissen</label>
+<input type="range" min="1" max="5" step="0.5" name="fachwissen" required>
+
+<textarea name="kommentar" placeholder="Kommentar..."></textarea>
+
+<button type="submit" onclick="this.disabled=true; this.innerText='Wird gesendet…'; this.form.submit();">
+    Absenden
+</button>
+
+</form>
 </div>
 
 </body>
