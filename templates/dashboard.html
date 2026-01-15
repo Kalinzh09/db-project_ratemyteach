@@ -85,8 +85,9 @@
 
 
                     <form method="post"
-                          action="{{ url_for('delete_bewertung', b.id=b['bewertung_id']) }}"
-                          onsubmit="return confirm('Bewertung wirklich löschen?');">
+                        action="{{ url_for('delete_bewertung', bewertung_id=b['id']) }}"
+                        onsubmit="return confirm('Bewertung wirklich löschen?');">
+
                         <button class="button delete" type="submit">
                             Löschen
                         </button>
