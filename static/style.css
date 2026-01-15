@@ -1,15 +1,17 @@
-
+/* ---------------- RESET ---------------- */
 * {
     box-sizing: border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* ---------------- LIGHT MODE ---------------- */
 body {
     margin: 0;
     background: #f4f6fb;
     color: #1f2933;
 }
 
+/* ---------------- HEADER ---------------- */
 header {
     background: #4f46e5;
     color: white;
@@ -24,18 +26,28 @@ header h1 {
     font-size: 1.6rem;
 }
 
+/* ---------------- LINKS ---------------- */
 a {
     text-decoration: none;
     color: #4f46e5;
     font-weight: 500;
 }
 
+/* Header-Links */
+header a {
+    color: white;
+    margin-left: 15px;
+    font-weight: bold;
+}
+
+/* ---------------- LAYOUT ---------------- */
 .container {
     max-width: 900px;
     margin: 2rem auto;
     padding: 0 1rem;
 }
 
+/* ---------------- CARDS ---------------- */
 .card {
     background: white;
     border-radius: 14px;
@@ -50,6 +62,7 @@ a {
     box-shadow: 0 14px 30px rgba(0,0,0,0.08);
 }
 
+/* ---------------- BADGE ---------------- */
 .badge {
     display: inline-block;
     background: #eef2ff;
@@ -60,22 +73,25 @@ a {
     margin-left: 0.4rem;
 }
 
+/* ---------------- RATING ---------------- */
 .rating {
     font-size: 1.1rem;
     margin: 0.4rem 0;
 }
 
-/* Sterne */
+/* ---------------- STARS ---------------- */
 .star {
     font-size: 1.4rem;
     margin-right: 0.1rem;
 }
 
 .star.full { color: gold; }
+
 .star.half {
     color: gold;
     position: relative;
 }
+
 .star.half::before {
     content: '★';
     position: absolute;
@@ -85,33 +101,39 @@ a {
     display: inline-block;
     color: gold;
 }
+
 .star.empty { color: #ccc; }
 
-/* Klickbare Sterne für Formular */
+/* Klickbare Sterne */
 .star-rating .star {
     font-size: 1.6rem;
     cursor: pointer;
     color: #ccc;
     transition: color 0.2s;
 }
+
 .star-rating .star.selected,
 .star-rating .star.hover {
     color: gold;
 }
 
-.button {
-    display: inline-block;
-    margin-top: 0.6rem;
+/* ---------------- BUTTONS ---------------- */
+.button,
+button {
     background: #4f46e5;
     color: white;
-    padding: 0.5rem 0.9rem;
+    border: none;
+    padding: 0.6rem 1rem;
     border-radius: 8px;
+    cursor: pointer;
 }
 
-.button:hover {
+.button:hover,
+button:hover {
     opacity: 0.9;
 }
 
+/* ---------------- FORMS ---------------- */
 form {
     margin-top: 1rem;
 }
@@ -124,18 +146,22 @@ input, textarea, select {
     margin-bottom: 0.8rem;
 }
 
-button {
-    background: #4f46e5;
-    color: white;
+/* ---------------- DARK MODE BUTTON ---------------- */
+.darkmode-btn {
+    background: transparent;
     border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
+    color: white;
+    font-size: 1.3rem;
     cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 8px;
 }
 
+.darkmode-btn:hover {
+    background: rgba(255,255,255,0.2);
+}
 
-
-/* Mobile Anpassungen */
+/* ---------------- MOBILE ---------------- */
 @media (max-width: 600px) {
 
     header {
@@ -170,21 +196,36 @@ button {
     }
 }
 
-/* ---------------- DARK MODE ---------------- */
+/* ================================================= */
+/* ================= DARK MODE ===================== */
+/* ================================================= */
 
 body.dark {
     background: #0f172a;
     color: #e5e7eb;
 }
 
-body.dark .container {
+body.dark header {
     background: #020617;
-    box-shadow: 0 6px 18px rgba(255,255,255,0.03);
 }
 
-body.dark h1, 
+body.dark .card {
+    background: #020617;
+    box-shadow: 0 10px 25px rgba(255,255,255,0.03);
+}
+
+body.dark h1,
 body.dark h2 {
     color: #f9fafb;
+}
+
+body.dark a {
+    color: #93c5fd;
+}
+
+body.dark .badge {
+    background: #111827;
+    color: #e5e7eb;
 }
 
 body.dark input,
@@ -195,20 +236,12 @@ body.dark select {
     border: 1px solid #1e293b;
 }
 
-body.dark nav {
-    background: #020617;
-}
-
-body.dark nav a {
-    color: #e5e7eb;
-}
-
-body.dark button {
+body.dark button,
+body.dark .button {
     background: #334155;
 }
 
-body.dark button:hover {
+body.dark button:hover,
+body.dark .button:hover {
     background: #475569;
 }
-
-
