@@ -65,6 +65,28 @@
         .button.delete:hover {
             background-color: #c0392b;
         }
+        /* ---------- FIX: Bearbeiten & Löschen exakt gleich hoch ---------- */
+.button-row a.button,
+.button-row button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 44px;         /* <- gleiche fixe Höhe */
+    padding: 0 12px;      /* <- kein vertikales padding mehr */
+    line-height: 1;       /* <- verhindert “extra” Höhe beim <a> */
+    font-size: 15px;
+
+    box-sizing: border-box;
+}
+
+/* Button defaults killen (Browser macht sonst oft extra Höhe) */
+.button-row button {
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+}
+
 
         /* ---------- DARK MODE FIX (nur Dashboard) ---------- */
         body.dark .bewertung-card {
