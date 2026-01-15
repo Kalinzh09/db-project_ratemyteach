@@ -5,12 +5,58 @@
     <title>Bewertung bearbeiten</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* ---------- DARK MODE FIX (nur diese Seite) ---------- */
+
+        body.dark .card {
+            background: #0b1220;
+            color: #e5e7eb;
+            box-shadow: 0 10px 25px rgba(255,255,255,0.03);
+        }
+
+        body.dark label {
+            color: #e5e7eb;
+        }
+
+        body.dark textarea,
+        body.dark input {
+            background: #020617;
+            color: #f9fafb;
+            border: 1px solid #1e293b;
+        }
+
+        /* Header Button */
+        .header-right {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        #darkmode-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.35);
+            color: white;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        #darkmode-btn:hover {
+            border-color: rgba(255,255,255,0.7);
+        }
+    </style>
 </head>
 <body>
 
 <header>
     <h1>Bewertung bearbeiten</h1>
-    <a href="{{ url_for('dashboard') }}" style="color:white;">Zurück</a>
+
+    <div class="header-right">
+        <button id="darkmode-btn" onclick="toggleDarkMode()">🌙</button>
+        <a href="{{ url_for('dashboard') }}" style="color:white;">Zurück</a>
+    </div>
 </header>
 
 <div class="card">
@@ -38,17 +84,30 @@
 <input type="range" min="1" max="5" step="0.5" name="fachwissen" required
        value="{{ bewertung.fachwissen }}">
 
-
 <label>Kommentar</label>
 <textarea name="kommentar" required>{{ bewertung.kommentar }}</textarea>
 
-
-<button type="submit" onclick="this.disabled=true; this.innerText='Wird gesendet…'; this.form.submit();">
+<button type="submit"
+    onclick="this.disabled=true; this.innerText='Wird gesendet…'; this.form.submit();">
     Absenden
 </button>
 
 </form>
 </div>
+
+<script>
+function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+    localStorage.setItem(
+        "darkmode",
+        document.body.classList.contains("dark") ? "on" : "off"
+    );
+}
+
+if (localStorage.getItem("darkmode") === "on") {
+    document.body.classList.add("dark");
+}
+</script>
 
 </body>
 </html>
