@@ -6,62 +6,29 @@
     <title>{% block title %}Rate My Teacher{% endblock %}</title>
 
     <style>
-        /* ---------------- Reset + Fonts ---------------- */
-        * {
-            box-sizing: border-box;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
+        /* ---------------- RESET & FONT ---------------- */
+        * { box-sizing: border-box; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; padding: 0; }
+        body { background: #f4f6fb; color: #1f2933; }
+        a { text-decoration: none; color: #4f46e5; font-weight: 500; }
 
-        body {
-            margin: 0;
-            background: #f4f6fb;
-            color: #1f2933;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        a {
-            text-decoration: none;
-            color: #4f46e5;
-            font-weight: 500;
-        }
-
-        /* ---------------- Header / Navbar ---------------- */
- <nav class="navbar navbar-inverse">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/">Rate My Teacher</a>
-    </div>
-
-    <div id="navbar" class="collapse navbar-collapse">
-      <ul class="nav navbar-nav navbar-right">
-
-        {% if current_user.is_authenticated %}
-          <li><a href="#">Hallo, {{ current_user.username }}</a></li>
-          <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-          <li><a href="{{ url_for('login') }}">Login</a></li>
-          <li><a href="{{ url_for('register') }}">Registrieren</a></li>
-        {% endif %}
-
-        <!-- Dark Mode Button -->
-        <li>
-          <a href="javascript:void(0);" onclick="toggleDarkMode()" style="color:white;">🌙 Dark Mode</a>
-        </li>
-
-      </ul>
-    </div>
-  </div>
-</nav>
-
-
-        /* ---------------- Container ---------------- */
-        .container {
-            max-width: 960px;
-            margin: 2rem auto;
+        /* ---------------- NAVBAR ---------------- */
+        nav.navbar {
+            background: #4f46e5;
             padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        nav.navbar a { color: white; margin-left: 1rem; }
+
+        /* ---------------- CONTAINER ---------------- */
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
         }
 
-        /* ---------------- Cards ---------------- */
+        /* ---------------- CARD ---------------- */
         .card {
             background: white;
             border-radius: 14px;
@@ -70,124 +37,92 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
-
         .card:hover {
             transform: translateY(-2px);
             box-shadow: 0 14px 30px rgba(0,0,0,0.08);
         }
 
-        /* ---------------- Buttons ---------------- */
-        .button, button {
-            background: #4f46e5;
-            color: white;
-            border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
+        /* ---------------- HEADINGS ---------------- */
+        h1, h2 { margin-bottom: 0.8rem; }
 
-        .button:hover, button:hover {
-            opacity: 0.9;
+        /* ---------------- FORM ---------------- */
+        form input, form textarea, form select {
+            width: 100%; padding: 0.6rem; border-radius: 8px; border: 1px solid #d1d5db; margin-bottom: 0.8rem;
         }
-
-        /* ---------------- Form Inputs ---------------- */
-        input, textarea, select {
-            width: 100%;
-            padding: 0.6rem;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            margin-bottom: 0.8rem;
+        button, .button {
+            background: #4f46e5; color: white; border: none; padding: 0.6rem 1rem; border-radius: 8px; cursor: pointer;
         }
+        button:hover, .button:hover { opacity: 0.9; }
 
-        /* ---------------- Headings ---------------- */
-        h1, h2 {
-            margin-bottom: 0.8rem;
+        /* ---------------- STERNE ---------------- */
+        .star { font-size: 1.4rem; margin-right: 0.1rem; }
+        .star.full { color: gold; }
+        .star.half {
+            color: gold;
+            position: relative;
         }
-
-        /* ---------------- Dark Mode ---------------- */
-        body.dark {
-            background: #0f172a;
-            color: #e5e7eb;
+        .star.half::before {
+            content: '★';
+            position: absolute;
+            left: 0;
+            width: 50%;
+            overflow: hidden;
+            display: inline-block;
+            color: gold;
         }
+        .star.empty { color: #ccc; }
 
-        body.dark .container {
-            background: #020617;
-            box-shadow: 0 6px 18px rgba(255,255,255,0.03);
-        }
+        .star-rating .star { cursor: pointer; transition: color 0.2s; }
+        .star-rating .star.selected, .star-rating .star.hover { color: gold; }
 
-        body.dark .card {
-            background: #1e293b;
-            box-shadow: 0 6px 18px rgba(255,255,255,0.05);
-        }
-
-        body.dark a, body.dark nav a, body.dark nav button {
-            color: #e5e7eb;
-        }
-
-        body.dark input, body.dark textarea, body.dark select {
-            background: #1e293b;
-            color: #e5e7eb;
-            border: 1px solid #334155;
-        }
-
-        body.dark button, body.dark .button {
-            background: #334155;
-        }
-
-        body.dark button:hover, body.dark .button:hover {
-            background: #475569;
-        }
-
-        /* ---------------- Mobile Anpassungen ---------------- */
+        /* ---------------- MOBILE ---------------- */
         @media (max-width: 600px) {
-            nav ul {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .container {
-                margin: 1rem;
-                padding: 1rem;
-            }
+            nav.navbar { flex-direction: column; gap: 0.4rem; text-align: center; }
+            .container { margin: 1rem auto; }
         }
+
+        /* ---------------- DARK MODE ---------------- */
+        body.dark { background: #0f172a; color: #e5e7eb; }
+        body.dark .container { background: #020617; box-shadow: 0 6px 18px rgba(255,255,255,0.03); }
+        body.dark h1, body.dark h2 { color: #f9fafb; }
+        body.dark input, body.dark textarea, body.dark select { background: #020617; color: #f9fafb; border: 1px solid #1e293b; }
+        body.dark nav.navbar { background: #020617 !important; }
+        body.dark nav.navbar a { color: #e5e7eb !important; }
+        body.dark button, body.dark .button { background: #334155; }
+        body.dark button:hover, body.dark .button:hover { background: #475569; }
     </style>
 </head>
-
 <body>
-    <!-- ---------------- Navbar ---------------- -->
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar">
+        <div>
+            <a class="navbar-brand" href="/">RateMyTeach</a>
+        </div>
+        <div>
+            <!-- Dark Mode Button -->
+            <a href="javascript:void(0);" onclick="toggleDarkMode()">🌙 Dark Mode</a>
 
             {% if current_user.is_authenticated %}
-                <li><span>Hallo, {{ current_user.username }}</span></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <a href="#">Hallo, {{ current_user.username }}</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
             {% else %}
-                <li><a href="{{ url_for('login') }}">Login</a></li>
-                <li><a href="{{ url_for('register') }}">Registrieren</a></li>
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Registrieren</a>
             {% endif %}
-
-            <li>
-                <button id="darkmode-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
-            </li>
-        </ul>
+        </div>
     </nav>
 
-    <!-- ---------------- Content ---------------- -->
+    <!-- ================= CONTENT ================= -->
     <div class="container">
         {% block content %}{% endblock %}
     </div>
 
-    <!-- ---------------- JavaScript ---------------- -->
+    <!-- ================= SCRIPTS ================= -->
     <script>
         function toggleDarkMode() {
             document.body.classList.toggle("dark");
-
-            if (document.body.classList.contains("dark")) {
-                localStorage.setItem("darkmode", "on");
-            } else {
-                localStorage.setItem("darkmode", "off");
-            }
+            localStorage.setItem("darkmode", document.body.classList.contains("dark") ? "on" : "off");
         }
 
         // Dark Mode beim Laden prüfen
@@ -195,5 +130,6 @@
             document.body.classList.add("dark");
         }
     </script>
+
 </body>
 </html>
