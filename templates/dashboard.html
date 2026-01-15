@@ -25,12 +25,14 @@
             gap: 10px;
             margin-top: 15px;
         }
-
+        
+        /* Sowohl Links als auch Formulare gleich breit */
         .button-row a,
         .button-row form {
             flex: 1;
         }
 
+        /* Buttons innerhalb von <form> und <a> gleich stylen */
         .button-row button,
         .button-row a.button {
             width: 100%;
@@ -40,7 +42,10 @@
             border: none;
             cursor: pointer;
             text-align: center;
+            display: inline-block;  /* sicherstellen, dass width greift */
+            box-sizing: border-box; /* Padding zählt zur Breite */
         }
+        
 
         .button {
             background-color: #3498db;
