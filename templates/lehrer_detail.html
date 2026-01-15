@@ -68,9 +68,20 @@
 {% set half = 1 if (b.sterne - full) >= 0.5 else 0 %}
 {% set empty = 5 - full - half %}
 
-{% for i in range(full) %}⭐{% endfor %}
-{% if half %}✨{% endif %}
-{% for i in range(empty) %}☆{% endfor %}
+
+{% for i in range(full_stars) %}
+<span class="star full">★</span>
+{% endfor %}
+
+{% if half_star %}
+<span class="star half">★</span>
+{% endif %}
+
+{% for i in range(empty_stars) %}
+<span class="star empty">☆</span>
+{% endfor %}
+
+
 
 ({{ b.sterne }}/5)<br>
 
