@@ -22,34 +22,36 @@
 
         .button-row {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-top: 15px;
         }
 
-        /* Sowohl Links als auch Formulare gleich breit */
-        .button-row a,
-        .button-row form {
+        /* Links + Formulare gleich breit */
+        .button-row > a,
+        .button-row > form {
             flex: 1;
         }
 
-        /* Buttons innerhalb von <form> und <a> gleich stylen */
-        .button-row button,
-        .button-row a.button {
+        /* ✅ BEIDE Buttons exakt gleich groß */
+        .button-row a.button,
+        .button-row button {
             width: 100%;
-            padding: 12px;
+            height: 48px;                 /* ⭐ FIX: gleiche Höhe */
+            display: flex;                 /* ⭐ FIX: gleiches Layout */
+            align-items: center;           /* ⭐ FIX */
+            justify-content: center;       /* ⭐ FIX */
+            padding: 0;                    /* ⭐ FIX: kein Unterschied durch Padding */
             font-size: 15px;
-            border-radius: 6px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
-            text-align: center;
-            display: inline-block;
             box-sizing: border-box;
+            text-decoration: none;
         }
 
         .button {
             background-color: #3498db;
             color: white;
-            text-decoration: none;
         }
 
         .button:hover {
@@ -72,11 +74,12 @@
         }
 
         body.dark .dashboard-container h3,
-        body.dark .dashboard-container p {
+        body.dark .dashboard-container p,
+        body.dark .dashboard-container strong {
             color: #e5e7eb;
         }
 
-        /* optional: Buttons im Dark Mode etwas dunkler */
+        /* Buttons im Dark Mode */
         body.dark .button {
             background-color: #334155;
         }
@@ -90,7 +93,7 @@
             background-color: #7f1d1d;
         }
 
-        /* header rechts (für den button + link) */
+        /* header rechts */
         .header-right {
             display: flex;
             gap: 12px;
@@ -117,7 +120,7 @@
     <h1>Mein Dashboard</h1>
 
     <div class="header-right">
-        <button id="darkmode-btn" onclick="toggleDarkMode()">🌙</button>
+        <button id="darkmode-btn" type="button" onclick="toggleDarkMode()">🌙</button>
         <a href="/" style="color:white;">Menü</a>
     </div>
 </header>
@@ -137,9 +140,8 @@
                     </a>
 
                     <form method="post"
-                        action="{{ url_for('delete_bewertung', bewertung_id=b['id']) }}"
-                        onsubmit="return confirm('Bewertung wirklich löschen?');">
-
+                          action="{{ url_for('delete_bewertung', bewertung_id=b['id']) }}"
+                          onsubmit="return confirm('Bewertung wirklich löschen?');">
                         <button class="button delete" type="submit">
                             Löschen
                         </button>
