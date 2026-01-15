@@ -278,7 +278,7 @@ def edit_bewertung(bewertung_id):
         
         db_write("""
         UPDATE bewertung 
-        SET sterne=%s
+        SET sterne=%s,
             verstandlichkeit=%s,
             fairness=%s,
             sympathie=%s,
