@@ -26,46 +26,21 @@
         }
 
         /* ---------------- Header / Navbar ---------------- */
-        header, nav {
-            background: #4f46e5;
-            color: white;
-            padding: 1rem 2rem;
-        }
-
-        header h1, nav h1 {
-            margin: 0;
-            font-size: 1.6rem;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 1rem;
-            padding: 0;
-            margin: 0;
-            align-items: center;
-        }
-
-        nav li {
-            display: inline;
-        }
-
-        nav a, nav button {
-            color: white;
-            font-weight: 500;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        nav button:hover, nav a:hover {
-            opacity: 0.8;
-        }
-
-        #darkmode-btn {
-            margin-left: 0.5rem;
-        }
+       <nav style="background:#4f46e5; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+        <a href="/" style="color:white; font-weight:bold; font-size:1.2rem;">Rate My Teacher</a>
+    </div>
+    <div style="display:flex; gap:1rem; align-items:center;">
+        {% if current_user.is_authenticated %}
+            <span style="color:white;">Hallo, {{ current_user.username }}</span>
+            <a href="{{ url_for('logout') }}" style="color:white;">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" style="color:white;">Login</a>
+            <a href="{{ url_for('register') }}" style="color:white;">Registrieren</a>
+        {% endif %}
+        <button id="darkmode-btn" onclick="toggleDarkMode()" style="padding:0.4rem 0.8rem; border-radius:6px; border:none; cursor:pointer;">🌙 Dark Mode</button>
+    </div>
+</nav>
 
         /* ---------------- Container ---------------- */
         .container {
