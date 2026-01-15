@@ -1,171 +1,52 @@
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% extends "base.html" %}
+{% block title %}Lehrerbewertung{% endblock %}
 
-<!DOCTYPE html>
-<html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Lehrerbewertung</title>
-</head>
-<body>
+{% block content %}
 
-<header class="header">
-    <h1>RateMyTeach</h1>
+{% if is_admin(current_user) %}
+  <div style="margin-bottom:20px;">
+    <a class="button" href="{{ url_for('add_lehrer') }}">
+      ➕ Lehrer hinzufügen
+    </a>
+  </div>
+{% endif %}
 
-    <nav class="menu">
-        <button type="button" class="darkmode-btn" onclick="toggleDarkMode()" title="Dark Mode">
-            🌙
-        </button>
+{% for l in lehrer %}
+  <div class="card">
+    <h2>
+      {{ l.vorname }} {{ l.name }}
+      <span class="badge">{{ l.fach }}</span>
+    </h2>
 
-        <a href="{{ url_for('lehrer_liste') }}">🏠 Start</a>
-        <a href="{{ url_for('dashboard') }}">📊 Dashboard</a>
-        <a href="{{ url_for('logout') }}">🚪 Logout</a>
-    </nav>
-</header>
+    <p class="rating">
+      {% if l.avg_sterne is not none %}
+        {% set full = l.avg_sterne|int %}
+        {% set half = 1 if (l.avg_sterne - full) >= 0.5 else 0 %}
+        {% set empty = 5 - full - half %}
 
-<div class="container">
+        {% for _ in range(full) %}<span class="star full">★</span>{% endfor %}
+        {% if half %}<span class="star half">★</span>{% endif %}
+        {% for _ in range(empty) %}<span class="star empty">☆</span>{% endfor %}
+
+        {{ l.avg_sterne }} / 5
+      {% else %}
+        Noch keine Bewertungen
+      {% endif %}
+    </p>
+
+    <a class="button" href="{{ url_for('lehrer_detail', lehrer_id=l.id) }}">
+      Bewerten / Details
+    </a>
 
     {% if is_admin(current_user) %}
-        <div style="margin-bottom: 20px;">
-            <a class="button" href="{{ url_for('add_lehrer') }}">
-                ➕ Lehrer hinzufügen
-            </a>
-        </div>
+      <form method="POST"
+            action="{{ url_for('delete_lehrer', lehrer_id=l.id) }}"
+            onsubmit="return confirm('Lehrer wirklich löschen?');"
+            style="margin-top:10px;">
+        <button class="button danger">🗑 Lehrer löschen</button>
+      </form>
     {% endif %}
+  </div>
+{% endfor %}
 
-    {% for l in lehrer %}
-        <div class="card">
-            <h2>
-                {{ l.vorname }} {{ l.name }}
-                <span class="badge">{{ l.fach }}</span>
-            </h2>
-
-            <p class="rating">
-                {% if l.avg_sterne is not none %}
-                    {% set full_stars = l.avg_sterne|int %}
-                    {% set half_star = 1 if (l.avg_sterne - full_stars) >= 0.5 else 0 %}
-                    {% set empty_stars = 5 - full_stars - half_star %}
-
-                    {% for i in range(full_stars) %}
-                        <span class="star full">★</span>
-                    {% endfor %}
-
-                    {% if half_star %}
-                        <span class="star half">★</span>
-                    {% endif %}
-
-                    {% for i in range(empty_stars) %}
-                        <span class="star empty">☆</span>
-                    {% endfor %}
-
-                    {{ l.avg_sterne }} / 5
-                {% else %}
-                    Noch keine Bewertungen
-                {% endif %}
-            </p>
-
-            <a class="button" href="{{ url_for('lehrer_detail', lehrer_id=l.id) }}">
-                Bewerten / Details
-            </a>
-
-            {% if is_admin(current_user) %}
-                <form
-                    method="POST"
-                    action="{{ url_for('delete_lehrer', lehrer_id=l.id) }}"
-                    onsubmit="return confirm('Lehrer wirklich löschen?');"
-                    style="margin-top: 10px;"
-                >
-                    <button class="button danger" type="submit">
-                        🗑 Lehrer löschen
-                    </button>
-                </form>
-            {% endif %}
-        </div>
-    {% endfor %}
-
-</div>
-
-<style>
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.menu a {
-    color: white;
-    margin-left: 15px;
-    text-decoration: none;
-    font-weight: bold;
-}
-.menu a:hover {
-    text-decoration: underline;
-}
-
-.darkmode-btn{
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-right: 6px;
-    padding: 6px 8px;
-    border-radius: 8px;
-}
-.darkmode-btn:hover{
-    background: rgba(255,255,255,0.15);
-}
-
-/* Sterne */
-.star.full { color: gold; }
-.star.half { color: gold; position: relative; }
-.star.half::before {
-    content: '★';
-    position: absolute;
-    left: 0;
-    width: 50%;
-    overflow: hidden;
-    display: inline-block;
-    color: gold;
-}
-.star.empty { color: #ccc; }
-
-/* Buttons */
-.button.danger { background-color: #c0392b; }
-.button.danger:hover { background-color: #a93226; }
-
-/* Dark Mode */
-body.dark{
-    background: #0f172a;
-    color: #e5e7eb;
-}
-body.dark .card{
-    background: #020617;
-    box-shadow: 0 10px 25px rgba(255,255,255,0.03);
-}
-body.dark header{
-    background: #020617;
-}
-body.dark a{
-    color: #93c5fd;
-}
-body.dark .badge{
-    background: #111827;
-    color: #e5e7eb;
-}
-</style>
-
-<script>
-function toggleDarkMode() {
-    document.body.classList.toggle("dark");
-    localStorage.setItem(
-        "darkmode",
-        document.body.classList.contains("dark") ? "on" : "off"
-    );
-}
-if (localStorage.getItem("darkmode") === "on") {
-    document.body.classList.add("dark");
-}
-</script>
-
-</body>
-</html>
+{% endblock %}
