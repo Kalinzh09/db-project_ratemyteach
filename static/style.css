@@ -133,6 +133,8 @@ button {
     cursor: pointer;
 }
 
+
+
 /* Mobile Anpassungen */
 @media (max-width: 600px) {
 
@@ -167,4 +169,46 @@ button {
         font-size: 1.8rem;
     }
 }
+
+/* ---------------- DARK MODE ---------------- */
+
+body.dark {
+    background: #0f172a;
+    color: #e5e7eb;
+}
+
+body.dark .container {
+    background: #020617;
+    box-shadow: 0 6px 18px rgba(255,255,255,0.03);
+}
+
+body.dark h1, 
+body.dark h2 {
+    color: #f9fafb;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select {
+    background: #020617;
+    color: #f9fafb;
+    border: 1px solid #1e293b;
+}
+
+body.dark nav {
+    background: #020617;
+}
+
+body.dark nav a {
+    color: #e5e7eb;
+}
+
+body.dark button {
+    background: #334155;
+}
+
+body.dark button:hover {
+    background: #475569;
+}
+
 
