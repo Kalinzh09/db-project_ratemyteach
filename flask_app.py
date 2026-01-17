@@ -203,7 +203,7 @@ def lehrer_detail(lehrer_id):
     
     stats = db_read("""
         SELECT 
-        ROUND(Avg(sterne),2) AS sterne
+        ROUND(Avg(sterne),2) AS sterne,
         ROUND(AVG(verstandlichkeit),2) AS verstandlichkeit,
         ROUND(AVG(fairness),2) AS fairness,
         ROUND(AVG(sympathie),2) AS sympathie,
