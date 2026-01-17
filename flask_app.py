@@ -75,15 +75,30 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     error = None
+
     if request.method == "POST":
-        ok = register_user(
-            request.form.get("username"),
-            request.form.get("password"),
-            request.form.get("email")
-        )
-        if ok:
-            return redirect(url_for("login"))
-        error = "Benutzername oder Email existiert bereits."
+        username = request.form.get("username")
+        password = request.form.get("password")
+        email = request.form.get("email").strip().lower()
+
+        # 1) Schul-Mail prüfen
+        if not email.endswith("@schule.com"):
+            error = "Nur @schule.com E-Mails sind erlaubt."
+        else:
+            # 2) Prüfen ob Mail zu einem Lehrer gehört
+            lehrer = db_read(
+                "SELECT id FROM lehrer WHERE email = %s",
+                (email,)
+            )
+
+            if lehrer:
+                error = "Diese E-Mail gehört zu einem Lehrer."
+            else:
+                # 3) User registrieren
+                ok = register_user(username, password, email)
+                if ok:
+                    return redirect(url_for("login"))
+                error = "Benutzername oder E-Mail existiert bereits."
 
     return render_template(
         "auth.html",
