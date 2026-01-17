@@ -80,8 +80,8 @@ if (localStorage.getItem("darkmode") === "on") {
     <p><strong>E-Mail:</strong> {{ lehrer.email }}</p>
     <p><strong>Fach:</strong> {{ lehrer.fach }}</p>
     <p><strong>Durchschnittliche Sterne:</strong> {{ stats.avg_sterne }}/5</p>
-    {% set full = l.avg_sterne|int %}
-    {% set half = 1 if (l.avg_sterne - full) >= 0.5 else 0 %}
+    {% set full = stats.sterne|int %}
+    {% set half = 1 if (stats.sterne - full) >= 0.5 else 0 %}
     {% set empty = 5 - full - half %}
 
     {% for _ in range(full) %}<span class="star full">★</span>{% endfor %}
