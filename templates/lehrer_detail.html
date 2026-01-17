@@ -222,11 +222,11 @@ new Chart(document.getElementById("radarChart"), {
         datasets: [{
             label: "Durchschnitt",
             data: [
-                {{ stats.verstandlichkeit }},
-                {{ stats.fairness }},
-                {{ stats.sympathie }},
-                {{ stats.organisation }},
-                {{ stats.fachwissen }}
+                {{ stats.verstandlichkeit|default(0) }},
+                {{ stats.fairness|default(0) }},
+                {{ stats.sympathie|default(0) }},
+                {{ stats.organisation|default(0) }},
+                {{ stats.fachwissen|default(0) }}
             ],
             fill: true,
             backgroundColor: isDark ? "rgba(56,189,248,0.15)" : "rgba(79,70,229,0.18)",
