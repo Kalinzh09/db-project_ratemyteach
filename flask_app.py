@@ -106,19 +106,41 @@ def logout():
 # Lehrerübersicht
 # --------------------
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 @login_required
 def lehrer_liste():
-    lehrer = db_read("""
-        SELECT l.id, l.vorname, l.name, l.fach,
-               ROUND(AVG(b.sterne),1) AS avg_sterne
-        FROM lehrer l
-        LEFT JOIN bewertung b ON l.id = b.lehrer_id
-        GROUP BY l.id
-    """)
-    return render_template("lehrer_liste.html", lehrer=lehrer)
+    suchbegriff = request.args.get("q", "").strip()
 
-# --------------------
+    if suchbegriff:
+        lehrer = db_read("""
+            SELECT l.id, l.vorname, l.name, l.fach,
+                   ROUND(AVG(b.sterne),1) AS avg_sterne
+            FROM lehrer l
+            LEFT JOIN bewertung b ON l.id = b.lehrer_id
+            WHERE l.vorname LIKE %s
+               OR l.name LIKE %s
+               OR l.fach LIKE %s
+            GROUP BY l.id
+        """, (
+            f"%{suchbegriff}%",
+            f"%{suchbegriff}%",
+            f"%{suchbegriff}%"
+        ))
+    else:
+        lehrer = db_read("""
+            SELECT l.id, l.vorname, l.name, l.fach,
+                   ROUND(AVG(b.sterne),1) AS avg_sterne
+            FROM lehrer l
+            LEFT JOIN bewertung b ON l.id = b.lehrer_id
+            GROUP BY l.id
+        """)
+
+    return render_template(
+        "lehrer_liste.html",
+        lehrer=lehrer,
+        q=suchbegriff
+    )
+
 # Lehrer Detail + Bewertung
 # --------------------
 
