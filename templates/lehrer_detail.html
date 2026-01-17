@@ -65,13 +65,15 @@ if (localStorage.getItem("darkmode") === "on") {
     </div>
 </header>
 
-<div class="card steckbrief">
+<!-- ================= STECKBRIEF ================= -->
+<div class="card" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
     <h3>Lehrer-Steckbrief</h3>
     <p><strong>Name:</strong> {{ lehrer.vorname }} {{ lehrer.name }}</p>
     <p><strong>E-Mail:</strong> {{ lehrer.email }}</p>
     <p><strong>Fach:</strong> {{ lehrer.fach }}</p>
-    
+    <p><strong>Durchschnittliche Sterne:</strong> {{ stats.avg_sterne }}/5</p>
 </div>
+
 
 
 
