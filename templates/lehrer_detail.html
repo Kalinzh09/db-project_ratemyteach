@@ -88,7 +88,7 @@ if (localStorage.getItem("darkmode") === "on") {
         {% for _ in range(full) %}<span class="star full">★</span>{% endfor %}
         {% if half %}<span class="star half">★</span>{% endif %}
         {% for _ in range(empty) %}<span class="star empty">☆</span>{% endfor %}
-         {{ l.avg_sterne }} / 5
+         {{ stats.sterne }} / 5
     {% else %}
         <p><strong>Noch Keine Bewertungen</strong>
        
