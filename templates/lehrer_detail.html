@@ -65,6 +65,18 @@ if (localStorage.getItem("darkmode") === "on") {
     </div>
 </header>
 
+<div class="card steckbrief">
+    <h3>Lehrer-Steckbrief</h3>
+    <p><strong>Name:</strong> {{ lehrer.vorname }} {{ lehrer.name }}</p>
+    <p><strong>E-Mail:</strong> {{ lehrer.email }}</p>
+    <p><strong>Fach:</strong> {{ lehrer.fach }}</p>
+    
+</div>
+
+
+
+
+    
 <div class="container">
 
 <div class="card">
@@ -72,6 +84,8 @@ if (localStorage.getItem("darkmode") === "on") {
     <canvas id="radarChart"></canvas>
 </div>
 
+
+    
 {% if anzbewertungenuser == 0 %}
 <div class="card">
 <h3>Bewertung abgeben</h3>
