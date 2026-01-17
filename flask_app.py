@@ -208,6 +208,7 @@ def lehrer_detail(lehrer_id):
         ROUND(AVG(sympathie),2) AS sympathie,
         ROUND(AVG(organisation),2) AS organisation,
         ROUND(AVG(fachwissen),2) AS fachwissen
+        ROund(Avg(sterne),2) AS sterne
         FROM bewertung
         WHERE lehrer_id=%s
     """, (lehrer_id,), single=True)
