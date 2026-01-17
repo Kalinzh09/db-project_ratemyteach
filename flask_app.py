@@ -83,7 +83,7 @@ def register():
 
         # 1) Schul-Mail prüfen
         if not email.endswith("@schule.com"):
-            error = "Nur @schule.com E-Mails sind erlaubt."
+            error = "Nur Schul-mails sind erlaubt."
         else:
             # 2) Prüfen ob Mail zu einem Lehrer gehört
             lehrer = db_read(
