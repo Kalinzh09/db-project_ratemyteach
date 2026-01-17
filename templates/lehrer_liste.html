@@ -33,8 +33,8 @@
 
     <p class="rating">
       {% if l.avg_sterne is not none %}
-        {% set full = sterne|int %}
-        {% set half = 1 if (sterne - full) >= 0.5 else 0 %}
+        {% set full = l.avg_sterne|int %}
+        {% set half = 1 if (l.avg_sterne - full) >= 0.5 else 0 %}
         {% set empty = 5 - full - half %}
 
         {% for _ in range(full) %}<span class="star full">★</span>{% endfor %}
