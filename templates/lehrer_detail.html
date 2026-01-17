@@ -108,54 +108,6 @@ if (localStorage.getItem("darkmode") === "on") {
     <canvas id="radarChart"></canvas>
 </div>
 
-<script>
-const isDark = document.body.classList.contains("dark");
-
-new Chart(document.getElementById("radarChart"), {
-    type: "radar",
-    data: {
-        labels: ["Verständlichkeit", "Fairness", "Sympathie", "Organisation", "Fachwissen"],
-        datasets: [{
-            label: "Durchschnitt",
-            data: [
-                {{ stats.verstandlichkeit }},
-                {{ stats.fairness }},
-                {{ stats.sympathie }},
-                {{ stats.organisation }},
-                {{ stats.fachwissen }}
-            ],
-            fill: true,
-            backgroundColor: isDark ? "rgba(56,189,248,0.15)" : "rgba(79,70,229,0.18)",
-            borderColor: isDark ? "rgba(56,189,248,0.95)" : "rgba(79,70,229,0.95)",
-            pointBackgroundColor: isDark ? "#38bdf8" : "#4f46e5"
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        scales: {
-            r: {
-                min: 0,
-                max: 5,
-                ticks: {
-                    stepSize: 1,
-                    color: isDark ? "#e5e7eb" : "#111827",
-                    backdropColor: "transparent"
-                },
-                grid: {
-                    color: isDark ? "rgba(255,255,255,0.30)" : "rgba(17,24,39,0.12)"
-                },
-                angleLines: {
-                    color: isDark ? "rgba(255,255,255,0.30)" : "rgba(17,24,39,0.12)"
-                },
-                pointLabels: {
-                    color: isDark ? "#cbd5e1" : "#111827"
-                }
-            }
-        }
-    }
-});
-</script>
 
 
 
