@@ -3,6 +3,19 @@
 
 {% block content %}
 
+<form method="get" style="margin-bottom:20px;">
+    <input type="text"
+           name="q"
+           placeholder="Lehrer oder Fach suchen…"
+           value="{{ q }}"
+           style="padding:10px; width:70%; max-width:300px;">
+
+    <button type="submit" style="padding:10px;">
+        Suchen
+    </button>
+</form>
+
+
 {% if is_admin(current_user) %}
   <div style="margin-bottom:20px;">
     <a class="button" href="{{ url_for('add_lehrer') }}">
